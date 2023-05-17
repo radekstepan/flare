@@ -39,7 +39,8 @@ async function getFlags(data: Data, jwt: Jwt, parameters: Params) {
   ));
 
   return res.reduce<Flags>((acc, [name, bool]) => {
-    acc[name] = bool;
+    // can get undefined when some of the vars in context are not populated
+    acc[name] = bool || false;
     return acc;
   }, {});
 }

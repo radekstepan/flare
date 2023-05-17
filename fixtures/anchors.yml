@@ -1,0 +1,22 @@
+"feature/foo":
+    eval: "IncludeTestCompanies"
+    conditions:
+      - &includeTestCompanies
+        id: IncludeTestCompanies
+        operation: include
+        kind: jwt
+        path: concur.company
+        value:
+          - vortex
+          - volantis
+
+"feature/bar":
+    eval: "IncludeTestCompanies || IncludeAcme"
+    conditions:
+      - *includeTestCompanies
+      - id: IncludeAcme
+        operation: include
+        kind: jwt
+        path: concur.company
+        value:
+          - acme
