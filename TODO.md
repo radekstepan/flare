@@ -1,0 +1,5 @@
+- parse JWT; perhaps by way of a transform function that is applied on any input payload
+- load all YAML files in a folder with an optional pattern to filter out just some
+- convert a list of ids into a Set
+- emit an event when an eval returns undefined (missing context value)
+- run benchmarks for comparison (memory, CPU, speed)

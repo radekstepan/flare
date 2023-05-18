@@ -1,30 +1,31 @@
 import {expect} from '@jest/globals';
-import getFlags from '../getFlags';
+import Aft from '../Aft';
 import loadYaml from '../loadYaml';
 
 describe('acme-or-inte', () => {
   const data = loadYaml('acme-or-inte');
+  const aft = new Aft(data);
 
   it('should include volantis from inte', async () => {
-    const jwt1 = {company: 'volantis', user: 'danny'};
-    const parameters1 = {location: 'inte'};
-    const flags = await getFlags(data, jwt1, parameters1);
+    const jwt = {company: 'volantis', user: 'danny'};
+    const parameters = {location: 'inte'};
+    const flags = await aft.evaluate(jwt, parameters);
 
     expect(flags['feature/foo']).toBe(true);
   });
 
   it('should include acme from us2', async () => {
-    const jwt2 = {company: 'acme', user: 'johnny'};
-    const parameters2 = {location: 'us2'};
-    const flags = await getFlags(data, jwt2, parameters2);
+    const jwt = {company: 'acme', user: 'johnny'};
+    const parameters = {location: 'us2'};
+    const flags = await aft.evaluate(jwt, parameters);
 
     expect(flags['feature/foo']).toBe(true);
   });
 
   it('should exclude vortex from us2', async () => {
-    const jwt3 = {company: 'vortex', user: 'johnny'};
-    const parameters3 = {location: 'us2'};
-    const flags = await getFlags(data, jwt3, parameters3);
+    const jwt = {company: 'vortex', user: 'johnny'};
+    const parameters = {location: 'us2'};
+    const flags = await aft.evaluate(jwt, parameters);
 
     expect(flags['feature/foo']).toBe(false);
   });

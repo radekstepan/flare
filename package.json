@@ -12,7 +12,7 @@
   "scripts": {
     "test": "yarn node --experimental-vm-modules $(yarn bin jest)"
   },
-  "name": "cft-sdk",
+  "name": "aft-sdk",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Radek Stepan <dev@radekstepan.com>",

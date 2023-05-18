@@ -10,12 +10,26 @@ export type Condition = {
   value: string[];
 };
 
-export type Gate = {
+export type Context = Record<string, boolean>;
+
+export type JexlEvalReturn = Promise<boolean | undefined>
+
+export type JexlEval = (context: Context) => JexlEvalReturn;
+
+export interface JexlCompiled {
+  eval: JexlEval;
+}
+
+export interface GateData {
   eval: string;
   conditions: Condition[];
 };
 
-export type Data = Record<string, Gate>;
+export type Data = Record<string, GateData>;
+
+export interface Gate extends GateData {
+  expr: JexlCompiled;
+}
 
 export interface Jwt {
   company: string;
@@ -25,5 +39,3 @@ export interface Jwt {
 export type Params = Record<string, any>;
 
 export type Flags = Record<string, boolean>;
-
-export type Context = Record<string, boolean>;
