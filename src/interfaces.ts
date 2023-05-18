@@ -12,13 +12,9 @@ export type Condition<ValueT> = {
 
 export type Context = Record<string, boolean>;
 
-export type JexlEvalReturn = Promise<boolean | undefined>
+export type EvalReturn = Promise<boolean | undefined>
 
-export type JexlEval = (context: Context) => JexlEvalReturn;
-
-export interface JexlCompiled {
-  eval: JexlEval;
-}
+export type Eval = (context: Context) => EvalReturn;
 
 export interface InputGate {
   eval: string;
@@ -28,7 +24,7 @@ export interface InputGate {
 export type Data = Record<string, InputGate>;
 
 export interface CompiledGate {
-  expr: JexlCompiled;
+  eval: Eval;
   conditions: Condition<Set<string>>[];
 }
 

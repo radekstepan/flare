@@ -1,5 +1,5 @@
-import jexl from 'jexl';
-import { CompiledGate, Condition, Context, Data, Flags, InputGate, JexlEvalReturn, Jwt, Operation, Params } from "./interfaces";
+import { CompiledGate, Condition, Context, Data, EvalReturn, Flags, Jwt, Operation, Params } from "./interfaces";
+import compile from './compile';
 
 class Aft {
   gates = new Map<string, CompiledGate>();
@@ -14,7 +14,7 @@ class Aft {
           ...condition,
           value: new Set(condition.value)
         })),
-        expr: jexl.compile(gate.eval)
+        eval: compile(gate.eval)
       });
     }
   }
@@ -46,7 +46,7 @@ class Aft {
 
   // Eval the gates given a context.
   async evaluate(jwt: Jwt, parameters: Params) {
-    const promises: [string, JexlEvalReturn][] = [];
+    const promises: [string, EvalReturn][] = [];
 
     for (const [name, gate] of this.gates) {
       const context: Context = {};
@@ -54,10 +54,10 @@ class Aft {
         context[condition.id] = Aft.evaluateCondition(condition, jwt, parameters);
       }
   
-      promises.push([name, gate.expr.eval(context)]);
+      promises.push([name, gate.eval(context)]);
     }
   
-    const res: [string, Awaited<JexlEvalReturn>][] = await Promise.all(promises.map(async ([name, promise]) =>
+    const res: [string, Awaited<EvalReturn>][] = await Promise.all(promises.map(async ([name, promise]) =>
       [name, await promise]
     ));
   
