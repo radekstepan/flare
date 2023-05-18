@@ -1,8 +1,8 @@
 import jexl from 'jexl';
-import { Condition, Context, Data, Flags, Gate, JexlEvalReturn, Jwt, Operation, Params } from "./interfaces";
+import { CompiledGate, Condition, Context, Data, Flags, InputGate, JexlEvalReturn, Jwt, Operation, Params } from "./interfaces";
 
 class Aft {
-  gates = new Map<string, Gate>();
+  gates = new Map<string, CompiledGate>();
 
   // Compile the expressions and save gates.
   constructor(data: Data) {
@@ -10,22 +10,24 @@ class Aft {
       const gate = data[name];
 
       this.gates.set(name, {
-        conditions: gate.conditions,
-        eval: gate.eval,
+        conditions: gate.conditions.map(condition => ({
+          ...condition,
+          value: new Set(condition.value)
+        })),
         expr: jexl.compile(gate.eval)
       });
     }
   }
 
   // Known gate condition operations.
-  static conditionOperations: Record<Operation, (list: string[], value: string) => boolean> = {
-    'exclude': (list, value) => !list.includes(value),
-    'include': (list, value) => list.includes(value),
+  static conditionOperations: Record<Operation, (set: Set<string>, value: string) => boolean> = {
+    'exclude': (set, value) => !set.has(value),
+    'include': (set, value) => set.has(value),
   };
 
   // Known gate conditions.
   static evaluateCondition(
-    condition: Condition,
+    condition: Condition<Set<string>>,
     jwt: Jwt,
     parameters: Params
   ): boolean {

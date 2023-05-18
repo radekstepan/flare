@@ -2,12 +2,12 @@ export type Operation = 'exclude' | 'include';
 
 export type Kind = 'jwt' | 'parameter';
 
-export type Condition = {
+export type Condition<ValueT> = {
   id: string;
   operation: Operation;
   kind: Kind;
   path: string;
-  value: string[];
+  value: ValueT;
 };
 
 export type Context = Record<string, boolean>;
@@ -20,15 +20,16 @@ export interface JexlCompiled {
   eval: JexlEval;
 }
 
-export interface GateData {
+export interface InputGate {
   eval: string;
-  conditions: Condition[];
+  conditions: Condition<string[]>[];
 };
 
-export type Data = Record<string, GateData>;
+export type Data = Record<string, InputGate>;
 
-export interface Gate extends GateData {
+export interface CompiledGate {
   expr: JexlCompiled;
+  conditions: Condition<Set<string>>[];
 }
 
 export interface Jwt {
