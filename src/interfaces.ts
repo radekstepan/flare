@@ -1,6 +1,6 @@
-export type Operation = 'exclude' | 'include';
+export type Operation = "exclude" | "include";
 
-export type Kind = 'jwt' | 'parameter';
+export type Kind = "jwt" | "parameter";
 
 export type Condition<ValueT> = {
   id: string;
@@ -12,14 +12,14 @@ export type Condition<ValueT> = {
 
 export type Context = Record<string, boolean>;
 
-export type EvalReturn = Promise<boolean | undefined>
+export type EvalReturn = Promise<boolean | undefined>;
 
 export type Eval = (context: Context) => EvalReturn;
 
 export interface InputGate {
   eval: string;
   conditions: Condition<string[]>[];
-};
+}
 
 export type Data = Record<string, InputGate>;
 
@@ -31,7 +31,7 @@ export interface CompiledGate {
 export interface Jwt {
   company: string;
   user: string;
-};
+}
 
 export type Params = Record<string, any>;
 

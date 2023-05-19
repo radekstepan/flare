@@ -8,23 +8,23 @@ function jobRunner<T>(init: Promise<void>): DoJob<T> {
   let jobQueue: Array<() => Promise<any>> = [];
 
   Promise.allSettled([init]).then(([result]) => {
-    if (result.status === 'fulfilled') {
+    if (result.status === "fulfilled") {
       initialized = true;
     } else {
-      failed = true;  
+      failed = true;
     }
 
     while (jobQueue.length > 0) {
       const run = jobQueue.shift();
       run && run();
     }
-  })
+  });
 
-  return job => {
+  return (job) => {
     return new Promise((resolve, reject) => {
       const runJob = async () => {
         if (failed) {
-          return reject(new Error('Initialization has failed'));
+          return reject(new Error("Initialization has failed"));
         }
 
         try {

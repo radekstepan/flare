@@ -1,4 +1,4 @@
-import jexl from 'jexl';
+import jexl from "jexl";
 import { Eval } from "./interfaces";
 
 const compile = (expr: string): Eval => {

@@ -1,10 +1,10 @@
 "feature/foo":
-    # allow everyone in us2
-    eval: "IncludeLocation"
-    conditions:
-      - id: IncludeLocation
-        operation: include
-        kind: parameter
-        path: location
-        value:
-          - us2
+  # allow everyone in us2
+  eval: "IncludeLocation"
+  conditions:
+    - id: IncludeLocation
+      operation: include
+      kind: parameter
+      path: location
+      value:
+        - us2

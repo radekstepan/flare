@@ -1,16 +1,16 @@
 "feature/foo":
-    # acme and all of inte 
-    eval: "IncludeLocation || IncludeCompany"
-    conditions:
-      - id: IncludeLocation
-        operation: include
-        kind: parameter
-        path: location
-        value:
-          - "inte"
-      - id: IncludeCompany
-        operation: include
-        kind: jwt
-        path: concur.company
-        value:
-          - "acme"
+  # acme and all of inte
+  eval: "IncludeLocation || IncludeCompany"
+  conditions:
+    - id: IncludeLocation
+      operation: include
+      kind: parameter
+      path: location
+      value:
+        - "inte"
+    - id: IncludeCompany
+      operation: include
+      kind: jwt
+      path: concur.company
+      value:
+        - "acme"
