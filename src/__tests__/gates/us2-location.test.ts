@@ -1,9 +1,9 @@
 import {expect} from '@jest/globals';
-import Aft from '../Aft';
-import loadYaml from '../loadYaml';
-import { Jwt } from '../interfaces';
+import Aft from '../../Aft';
+import loadYaml from '../../loadYaml';
+import { Jwt } from '../../interfaces';
 
-describe('us2-location', () => {
+describe('gates/us2-location', () => {
   const data = loadYaml('us2-location');
   const aft = new Aft(data);
 

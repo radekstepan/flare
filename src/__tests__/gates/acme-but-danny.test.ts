@@ -1,8 +1,8 @@
 import {expect} from '@jest/globals';
-import Aft from '../Aft';
-import loadYaml from '../loadYaml';
+import Aft from '../../Aft';
+import loadYaml from '../../loadYaml';
 
-describe('acme-but-danny', () => {
+describe('gates/acme-but-danny', () => {
   const data = loadYaml('acme-but-danny');
   const aft = new Aft(data);
 

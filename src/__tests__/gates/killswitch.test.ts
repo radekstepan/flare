@@ -1,9 +1,9 @@
 import {expect} from '@jest/globals';
-import Aft from '../Aft';
-import loadYaml from '../loadYaml';
-import { Jwt } from '../interfaces';
+import Aft from '../../Aft';
+import loadYaml from '../../loadYaml';
+import { Jwt } from '../../interfaces';
 
-describe('killswitch', () => {
+describe('gates/killswitch', () => {
   const data = loadYaml('killswitch');
   const aft = new Aft(data);
 

@@ -2,3 +2,8 @@
 - load all YAML files in a folder with an optional pattern to filter out just some
 - emit an event when an eval returns undefined (missing context value)
 - run benchmarks for comparison (memory, CPU, speed)
+- Acme Feature Toggle EvaluateR
+- check compile YAML result, data is considered "safe"
+- check eval statements
+- JSON spec for the data to verify
+- async start returning a job result as a promise when ready
