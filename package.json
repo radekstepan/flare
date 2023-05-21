@@ -16,7 +16,7 @@
     "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
     "prepare": "husky install"
   },
-  "name": "aft-sdk",
+  "name": "after",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Radek Stepan <dev@radekstepan.com>",

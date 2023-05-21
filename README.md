@@ -1,3 +1,3 @@
-# aft-sdk
+# after
 
-A library to evaluate feature flag configuration.
+Acme Feature Toggle EvaluateR

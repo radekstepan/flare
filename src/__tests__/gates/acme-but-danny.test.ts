@@ -1,15 +1,15 @@
 import { expect } from "@jest/globals";
-import Aft from "../../Aft";
+import After from "../../After";
 import loadYaml from "../../loadYaml";
 
 describe("gates/acme-but-danny", () => {
   const data = loadYaml("acme-but-danny");
-  const aft = new Aft(data);
+  const after = new After(data);
 
   it("should exclude danny from acme", async () => {
     const jwt = { company: "acme", user: "danny" };
     const parameters = { location: "us2" };
-    const flags = await aft.evaluate(jwt, parameters);
+    const flags = await after.evaluate(jwt, parameters);
 
     expect(flags["feature/foo"]).toBe(false);
   });
@@ -17,7 +17,7 @@ describe("gates/acme-but-danny", () => {
   it("should include other users from acme", async () => {
     const jwt = { company: "acme", user: "johnny" };
     const parameters = { location: "us2" };
-    const flags = await aft.evaluate(jwt, parameters);
+    const flags = await after.evaluate(jwt, parameters);
 
     expect(flags["feature/foo"]).toBe(true);
   });
@@ -25,7 +25,7 @@ describe("gates/acme-but-danny", () => {
   it("should exclude users from other companies", async () => {
     const jwt = { company: "foobar", user: "johnny" };
     const parameters = { location: "us2" };
-    const flags = await aft.evaluate(jwt, parameters);
+    const flags = await after.evaluate(jwt, parameters);
 
     expect(flags["feature/foo"]).toBe(false);
   });
