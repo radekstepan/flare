@@ -1,3 +1,3 @@
-# after
+# flare
 
-Acme Feature Toggle EvaluateR
+Feature Flag Loading and Runtime Evaluation

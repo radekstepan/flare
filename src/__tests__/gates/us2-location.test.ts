@@ -1,16 +1,16 @@
 import { expect } from "@jest/globals";
-import After from "../../After";
+import Flare from "../../Flare";
 import loadYaml from "../../loadYaml";
 import { Jwt } from "../../interfaces";
 
 describe("gates/us2-location", () => {
   const data = loadYaml("us2-location");
-  const after = new After(data);
+  const engine = new Flare(data);
 
   it("should include everyone in us2", async () => {
     const jwt = {} as Jwt;
     const parameters = { location: "us2" };
-    const flags = await after.evaluate(jwt, parameters);
+    const flags = await engine.evaluate(jwt, parameters);
 
     expect(flags["feature/foo"]).toBe(true);
   });
@@ -18,7 +18,7 @@ describe("gates/us2-location", () => {
   it("should exclude everyone not in us2", async () => {
     const jwt = {} as Jwt;
     const parameters = { location: "us1" };
-    const flags = await after.evaluate(jwt, parameters);
+    const flags = await engine.evaluate(jwt, parameters);
 
     expect(flags["feature/foo"]).toBe(false);
   });

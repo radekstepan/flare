@@ -11,7 +11,7 @@ import {
 } from "./interfaces";
 import compile from "./compile";
 
-class Aft {
+class Flare {
   gates = new Map<string, CompiledGate>();
 
   // Compile the expressions and save gates.
@@ -48,13 +48,13 @@ class Aft {
     switch (condition.kind) {
       case "jwt":
         value = jwt[condition.path.split(".")[1]];
-        return Aft.conditionOperations[condition.operation](
+        return Flare.conditionOperations[condition.operation](
           condition.value,
           value
         );
       case "parameter":
         value = parameters[condition.path];
-        return Aft.conditionOperations[condition.operation](
+        return Flare.conditionOperations[condition.operation](
           condition.value,
           value
         );
@@ -70,7 +70,7 @@ class Aft {
     for (const [name, gate] of this.gates) {
       const context: Context = {};
       for (let condition of gate.conditions) {
-        context[condition.id] = Aft.evaluateCondition(
+        context[condition.id] = Flare.evaluateCondition(
           condition,
           jwt,
           parameters
@@ -92,4 +92,4 @@ class Aft {
   }
 }
 
-export default Aft;
+export default Flare;
