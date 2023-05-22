@@ -1,8 +1,7 @@
 type Job<T> = () => Promise<T>;
+export type DoJob<T> = (job: Job<T>) => Promise<T>;
 
-type DoJob<T> = (job: Job<T>) => Promise<T>;
-
-function jobRunner<T>(init: Promise<void>): DoJob<T> {
+function jobRunner<T>(init: Promise<any>): DoJob<T> {
   let initialized = false;
   let failed = false;
   let jobQueue: Array<() => Promise<any>> = [];

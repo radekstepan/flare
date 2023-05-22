@@ -28,6 +28,7 @@ export interface CompiledGate {
   conditions: Condition<Set<string>>[];
 }
 
+// TODO: move to parameters, make this generic.
 export interface Jwt {
   company: string;
   user: string;

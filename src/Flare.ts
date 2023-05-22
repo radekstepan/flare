@@ -10,23 +10,28 @@ import {
   Params,
 } from "./interfaces";
 import compile from "./compile";
+import jobRunner, { type DoJob } from "./jobRunner";
 
 class Flare {
   gates = new Map<string, CompiledGate>();
+  jobRunner: DoJob<Flags>;
 
   // Compile the expressions and save gates.
-  constructor(data: Data) {
-    for (let name in data) {
-      const gate = data[name];
+  constructor(dataOrPromise: Data | Promise<Data>) {
+    const promise = Promise.resolve(dataOrPromise).then((data) => {
+      for (let name in data) {
+        const gate = data[name];
 
-      this.gates.set(name, {
-        conditions: gate.conditions.map((condition) => ({
-          ...condition,
-          value: new Set(condition.value),
-        })),
-        eval: compile(gate.eval),
-      });
-    }
+        this.gates.set(name, {
+          conditions: gate.conditions.map((condition) => ({
+            ...condition,
+            value: new Set(condition.value),
+          })),
+          eval: compile(gate.eval),
+        });
+      }
+    });
+    this.jobRunner = jobRunner(promise);
   }
 
   // Known gate condition operations.
@@ -65,30 +70,32 @@ class Flare {
 
   // Eval the gates given a context.
   async evaluate(jwt: Jwt, parameters: Params) {
-    const promises: [string, EvalReturn][] = [];
+    return this.jobRunner(async () => {
+      const promises: [string, EvalReturn][] = [];
 
-    for (const [name, gate] of this.gates) {
-      const context: Context = {};
-      for (let condition of gate.conditions) {
-        context[condition.id] = Flare.evaluateCondition(
-          condition,
-          jwt,
-          parameters
-        );
+      for (const [name, gate] of this.gates) {
+        const context: Context = {};
+        for (let condition of gate.conditions) {
+          context[condition.id] = Flare.evaluateCondition(
+            condition,
+            jwt,
+            parameters
+          );
+        }
+
+        promises.push([name, gate.eval(context)]);
       }
 
-      promises.push([name, gate.eval(context)]);
-    }
+      const res: [string, Awaited<EvalReturn>][] = await Promise.all(
+        promises.map(async ([name, promise]) => [name, await promise])
+      );
 
-    const res: [string, Awaited<EvalReturn>][] = await Promise.all(
-      promises.map(async ([name, promise]) => [name, await promise])
-    );
-
-    return res.reduce<Flags>((acc, [name, bool]) => {
-      // can get undefined when some of the vars in context are not populated
-      acc[name] = bool || false;
-      return acc;
-    }, {});
+      return res.reduce<Flags>((acc, [name, bool]) => {
+        // can get undefined when some of the vars in context are not populated
+        acc[name] = bool || false;
+        return acc;
+      }, {});
+    });
   }
 }
 
