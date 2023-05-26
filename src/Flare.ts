@@ -1,13 +1,12 @@
 import {
   CompiledGate,
   Condition,
-  Context,
   Data,
+  EvalContext,
   EvalReturn,
   Flags,
-  Jwt,
+  InputContext,
   Operation,
-  Params,
 } from "./interfaces";
 import compile from "./compile";
 import jobRunner, { type DoJob } from "./jobRunner";
@@ -46,19 +45,13 @@ class Flare {
   // Known gate conditions.
   static evaluateCondition(
     condition: Condition<Set<string>>,
-    jwt: Jwt,
-    parameters: Params
+    input: InputContext
   ): boolean {
     let value: string;
     switch (condition.kind) {
-      case "jwt":
-        value = jwt[condition.path.split(".")[1]];
-        return Flare.conditionOperations[condition.operation](
-          condition.value,
-          value
-        );
-      case "parameter":
-        value = parameters[condition.path];
+      case "context":
+        // TODO opa
+        value = input[condition.path] as string;
         return Flare.conditionOperations[condition.operation](
           condition.value,
           value
@@ -68,19 +61,15 @@ class Flare {
     }
   }
 
-  // Eval the gates given a context.
-  async evaluate(jwt: Jwt, parameters: Params) {
+  // Eval the gates given an input context.
+  async evaluate(input: InputContext) {
     return this.jobRunner(async () => {
       const promises: [string, EvalReturn][] = [];
 
       for (const [name, gate] of this.gates) {
-        const context: Context = {};
+        const context: EvalContext = {};
         for (let condition of gate.conditions) {
-          context[condition.id] = Flare.evaluateCondition(
-            condition,
-            jwt,
-            parameters
-          );
+          context[condition.id] = Flare.evaluateCondition(condition, input);
         }
 
         promises.push([name, gate.eval(context)]);

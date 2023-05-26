@@ -4,8 +4,8 @@
     - &includeTestCompanies
       id: IncludeTestCompanies
       operation: include
-      kind: jwt
-      path: concur.company
+      kind: context
+      path: company
       value:
         - vortex
         - volantis
@@ -16,7 +16,7 @@
     - *includeTestCompanies
     - id: IncludeAcme
       operation: include
-      kind: jwt
-      path: concur.company
+      kind: context
+      path: company
       value:
         - acme

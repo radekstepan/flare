@@ -4,7 +4,7 @@ describe("schema", () => {
   const validCondition = {
     id: "foo",
     operation: "exclude",
-    kind: "parameter",
+    kind: "context",
     path: "valid.path",
   };
 
@@ -68,7 +68,7 @@ describe("schema", () => {
           operation: "exclude",
           kind: "custom",
         })
-      ).rejects.toThrow('"kind" must be one of [jwt, parameter]');
+      ).rejects.toThrow('"kind" must be [context]');
     });
 
     it('Should throw an error for missing "path"', () => {
@@ -76,7 +76,7 @@ describe("schema", () => {
         conditionSchema.validateAsync({
           id: "foo",
           operation: "exclude",
-          kind: "parameter",
+          kind: "context",
         })
       ).rejects.toThrow('"path" is required');
     });
@@ -86,7 +86,7 @@ describe("schema", () => {
         conditionSchema.validateAsync({
           id: "foo",
           operation: "exclude",
-          kind: "parameter",
+          kind: "context",
           path: "./",
         })
       ).rejects.toThrow(

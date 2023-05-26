@@ -4,13 +4,13 @@
   conditions:
     - id: IncludeCompany
       operation: include
-      kind: jwt
-      path: concur.company
+      kind: context
+      path: company
       value:
         - acme
     - id: ExcludeUser
       operation: exclude
-      kind: jwt
-      path: concur.user
+      kind: context
+      path: user
       value:
         - danny

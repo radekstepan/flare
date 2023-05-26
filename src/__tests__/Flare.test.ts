@@ -13,13 +13,10 @@ describe("Flare", () => {
       );
 
       return expect(
-        engine.evaluate(
-          {
-            company: "acme",
-            user: "tony",
-          },
-          {}
-        )
+        engine.evaluate({
+          company: "acme",
+          user: "tony",
+        })
       ).resolves.toEqual({
         foo: true,
       });

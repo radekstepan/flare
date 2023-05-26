@@ -4,7 +4,7 @@ export const conditionSchema = Joi.object()
   .keys({
     id: Joi.string().alphanum().required(),
     operation: Joi.string().valid("exclude", "include").required(),
-    kind: Joi.string().valid("jwt", "parameter").required(),
+    kind: Joi.string().valid("context").required(),
     path: Joi.string()
       .pattern(/^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*$/)
       .required(),

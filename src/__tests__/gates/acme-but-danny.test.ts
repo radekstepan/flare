@@ -7,25 +7,22 @@ describe("gates/acme-but-danny", () => {
   const engine = new Flare(data);
 
   it("should exclude danny from acme", async () => {
-    const jwt = { company: "acme", user: "danny" };
-    const parameters = { location: "us2" };
-    const flags = await engine.evaluate(jwt, parameters);
+    const input = { company: "acme", user: "danny", location: "us2" };
+    const flags = await engine.evaluate(input);
 
     expect(flags["feature/foo"]).toBe(false);
   });
 
   it("should include other users from acme", async () => {
-    const jwt = { company: "acme", user: "johnny" };
-    const parameters = { location: "us2" };
-    const flags = await engine.evaluate(jwt, parameters);
+    const input = { company: "acme", user: "johnny", location: "us2" };
+    const flags = await engine.evaluate(input);
 
     expect(flags["feature/foo"]).toBe(true);
   });
 
   it("should exclude users from other companies", async () => {
-    const jwt = { company: "foobar", user: "johnny" };
-    const parameters = { location: "us2" };
-    const flags = await engine.evaluate(jwt, parameters);
+    const input = { company: "foobar", user: "johnny", location: "us2" };
+    const flags = await engine.evaluate(input);
 
     expect(flags["feature/foo"]).toBe(false);
   });

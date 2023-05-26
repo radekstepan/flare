@@ -4,7 +4,7 @@
   conditions:
     - id: IncludeLocation
       operation: include
-      kind: parameter
+      kind: context
       path: location
       value:
         - us2
