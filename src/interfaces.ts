@@ -10,8 +10,10 @@ export type Condition<ValueT> = {
   value: ValueT;
 };
 
+export type InputContextValue = string | number;
+
 export type InputContext = {
-  [key: string]: string | number | InputContext;
+  [key: string]: InputContextValue | InputContext;
 };
 
 export type EvalContext = Record<string, boolean>;

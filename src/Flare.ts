@@ -1,4 +1,6 @@
-import {
+import compile from "./compile";
+import jobRunner, { type DoJob } from "./jobRunner";
+import type {
   CompiledGate,
   Condition,
   Data,
@@ -6,10 +8,10 @@ import {
   EvalReturn,
   Flags,
   InputContext,
+  InputContextValue,
   Operation,
 } from "./interfaces";
-import compile from "./compile";
-import jobRunner, { type DoJob } from "./jobRunner";
+import { getProperty } from "./object";
 
 class Flare {
   gates = new Map<string, CompiledGate>();
@@ -36,7 +38,7 @@ class Flare {
   // Known gate condition operations.
   static conditionOperations: Record<
     Operation,
-    (set: Set<string>, value: string) => boolean
+    (set: Set<InputContextValue>, value: InputContextValue) => boolean
   > = {
     exclude: (set, value) => !set.has(value),
     include: (set, value) => set.has(value),
@@ -47,11 +49,12 @@ class Flare {
     condition: Condition<Set<string>>,
     input: InputContext
   ): boolean {
-    let value: string;
     switch (condition.kind) {
       case "context":
-        // TODO opa
-        value = input[condition.path] as string;
+        const value = getProperty(input, condition.path);
+        if (value === null) {
+          return false;
+        }
         return Flare.conditionOperations[condition.operation](
           condition.value,
           value
