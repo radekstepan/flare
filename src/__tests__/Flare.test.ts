@@ -22,4 +22,36 @@ describe("Flare", () => {
       });
     });
   });
+
+  describe("evaluateCondition", () => {
+    it("Should default to false", () => {
+      expect(
+        Flare.evaluateCondition(
+          {
+            kind: "unknown" as any,
+            id: "",
+            operation: "include",
+            path: "",
+            value: new Set(),
+          },
+          {}
+        )
+      ).toBeFalsy();
+    });
+
+    it("Should return false if an input path doesn't exist", () => {
+      expect(
+        Flare.evaluateCondition(
+          {
+            kind: "context",
+            id: "",
+            operation: "include",
+            path: "foo",
+            value: new Set("tommy"),
+          },
+          { user: "tommy" }
+        )
+      ).toBeFalsy();
+    });
+  });
 });

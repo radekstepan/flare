@@ -23,7 +23,7 @@ function jobRunner<T>(init: Promise<any>): DoJob<T> {
     return new Promise((resolve, reject) => {
       const runJob = async () => {
         if (failed) {
-          return reject(new Error("Initialization has failed"));
+          return reject("Initialization has failed");
         }
 
         try {

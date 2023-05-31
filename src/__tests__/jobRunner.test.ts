@@ -57,10 +57,52 @@ describe("jobRunner", () => {
 
     const rejection = {
       status: "rejected",
-      reason: new Error("Initialization has failed"),
+      reason: "Initialization has failed",
     };
 
     expect(job1Result).toEqual(expect.objectContaining(rejection));
     expect(job2Result).toEqual(expect.objectContaining(rejection));
+  });
+
+  it("should handle a job that has failed", async () => {
+    const init = new Promise<void>((resolve) => {
+      setTimeout(resolve, 100);
+    });
+
+    const runner = jobRunner(init);
+
+    const job1 = jest.fn(() => Promise.reject("Job 1 failed"));
+    const job2 = jest.fn(() => Promise.resolve("Job 2 completed"));
+
+    const job1Promise = runner(job1);
+    const job2Promise = runner(job2);
+
+    // Not ready yet.
+    expect(job1).not.toHaveBeenCalled();
+    expect(job2).not.toHaveBeenCalled();
+
+    jest.advanceTimersByTime(100);
+
+    // Wait for all promises to get settled.
+    const [job1Result, job2Result] = await Promise.allSettled([
+      job1Promise,
+      job2Promise,
+    ]);
+
+    expect(job1).toHaveBeenCalled();
+    expect(job2).toHaveBeenCalled();
+
+    expect(job1Result).toEqual(
+      expect.objectContaining({
+        status: "rejected",
+        reason: "Job 1 failed",
+      })
+    );
+    expect(job2Result).toEqual(
+      expect.objectContaining({
+        status: "fulfilled",
+        value: "Job 2 completed",
+      })
+    );
   });
 });
