@@ -1,13 +1,12 @@
+import type { PathLike } from "fs";
 import { readFile } from "fs/promises";
-import { normalize } from "path";
 import { load } from "js-yaml";
-// TODO use
-// import {serializeError} from "serialize-error";
-import { gateSchema } from "./schema";
-import type { Data } from "./interfaces";
+import { serializeError } from "serialize-error";
+import { gateSchema } from "./schema.js";
+import type { Data } from "./interfaces.js";
 
-export const readYaml = async <T = Data>(path: string): Promise<T> => {
-  const yaml = await readFile(normalize(path));
+export const readYaml = async <T = Data>(path: PathLike): Promise<T> => {
+  const yaml = await readFile(path);
   return load(yaml.toString()) as T;
 };
 
@@ -26,8 +25,8 @@ export const validateData = async (data: Data) => {
   return Promise.all(
     Object.entries(data).map(([name, gate]) =>
       gateSchema.validateAsync(gate).catch((error) => {
-        // const {message} = serializeError(error);
-        throw new GateSchemaError(name, error.message);
+        const { message } = serializeError(error);
+        throw new GateSchemaError(name, message);
       })
     )
   );

@@ -1,17 +1,16 @@
-import compile from "./compile";
-import jobRunner, { type DoJob } from "./jobRunner";
+import compile from "./compile.js";
+import jobRunner, { type DoJob } from "./jobRunner.js";
 import type {
   CompiledGate,
   Condition,
   Data,
   EvalContext,
-  EvalReturn,
   Flags,
   InputContext,
   InputContextValue,
   Operation,
-} from "./interfaces";
-import { getProperty } from "./object";
+} from "./interfaces.js";
+import { getProperty } from "./object.js";
 
 class Flare {
   gates = new Map<string, CompiledGate>();

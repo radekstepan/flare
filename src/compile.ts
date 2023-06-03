@@ -1,5 +1,5 @@
 import jexl from "jexl";
-import { Eval } from "./interfaces";
+import { Eval } from "./interfaces.js";
 
 const compile = (expr: string): Eval => {
   switch (expr) {

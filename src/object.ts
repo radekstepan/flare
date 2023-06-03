@@ -1,4 +1,4 @@
-import type { InputContextValue, InputContext } from "./interfaces";
+import type { InputContextValue, InputContext } from "./interfaces.js";
 
 // TODO use sindresorhus/dot-prop
 export const getProperty = (
