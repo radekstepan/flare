@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "dot-prop": "sindresorhus/dot-prop",
     "jexl": "^2.3.0",
     "js-yaml": "^4.1.0",
     "serialize-error": "^11.0.0"

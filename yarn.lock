@@ -1226,6 +1226,12 @@ dot-prop@^7.2.0:
   dependencies:
     type-fest "^2.11.2"
 
+dot-prop@sindresorhus/dot-prop:
+  version "8.0.0"
+  resolved "https://codeload.github.com/sindresorhus/dot-prop/tar.gz/bf6224b074cd46e7a384f987062c31e8c688eb90"
+  dependencies:
+    type-fest "^3.8.0"
+
 eastasianwidth@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/eastasianwidth/-/eastasianwidth-0.2.0.tgz#696ce2ec0aa0e6ea93a397ffcf24aa7840c827cb"
@@ -3742,7 +3748,7 @@ type-fest@^2.0.0, type-fest@^2.11.2, type-fest@^2.12.2, type-fest@^2.13.0, type-
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.19.0.tgz#88068015bb33036a598b952e55e9311a60fd3a9b"
   integrity sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==
 
-type-fest@^3.0.0, type-fest@^3.1.0, type-fest@^3.9.0:
+type-fest@^3.0.0, type-fest@^3.1.0, type-fest@^3.8.0, type-fest@^3.9.0:
   version "3.11.1"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-3.11.1.tgz#d8e62c7f42e14537d5b8796de5450d541f3a33a7"
   integrity sha512-aCuRNRERRVh33lgQaJRlUxZqzfhzwTrsE98Mc3o3VXqmiaQdHacgUtJ0esp+7MvZ92qhtzKPeusaX6vIEcoreA==
