@@ -48,19 +48,18 @@ class Flare {
     condition: Condition<Set<InputContextValue>>,
     input: InputContext
   ): boolean {
-    switch (condition.kind) {
-      case "context":
-        const value = getProperty(input, condition.path);
-        if (value === null) {
-          return false;
-        }
-        return Flare.conditionOperations[condition.operation](
-          condition.value,
-          value
-        );
-      default:
+    if (condition.kind === "context") {
+      const value = getProperty(input, condition.path);
+      if (value === null) {
         return false;
+      }
+      return Flare.conditionOperations[condition.operation](
+        condition.value,
+        value
+      );
     }
+
+    return false;
   }
 
   // Eval a gate given an input context.
