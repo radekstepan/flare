@@ -8,7 +8,7 @@ describe("gates/anchors", () => {
 
   it("should enable feature/foo and feature/bar for vortex", async () => {
     const input = { company: "vortex", user: "johnny" };
-    const flags = await engine.evaluate(input);
+    const flags = await engine.evaluateAll(input);
 
     expect(flags).toEqual({
       "feature/foo": true,
@@ -18,7 +18,7 @@ describe("gates/anchors", () => {
 
   it("should enable feature/bar for acme", async () => {
     const input = { company: "acme", user: "danny" };
-    const flags = await engine.evaluate(input);
+    const flags = await engine.evaluateAll(input);
 
     expect(flags).toEqual({
       "feature/foo": false,
@@ -28,7 +28,7 @@ describe("gates/anchors", () => {
 
   it("should disable feature/foo and feature/bar for foobar", async () => {
     const input = { company: "foobar", user: "johnny" };
-    const flags = await engine.evaluate(input);
+    const flags = await engine.evaluateAll(input);
 
     expect(flags).toEqual({
       "feature/foo": false,

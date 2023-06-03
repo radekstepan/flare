@@ -13,12 +13,60 @@ describe("Flare", () => {
       );
 
       return expect(
-        engine.evaluate({
+        engine.evaluateAll({
           company: "acme",
           user: "tony",
         })
       ).resolves.toEqual({
         foo: true,
+      });
+    });
+  });
+
+  describe("evaluate", () => {
+    it("Should evaluate a single gate", () => {
+      const engine = new Flare({
+        foo: {
+          eval: "user && company",
+          conditions: [
+            {
+              kind: "context",
+              id: "user",
+              operation: "include",
+              path: "user",
+              value: ["tony"],
+            },
+            {
+              kind: "context",
+              id: "company",
+              operation: "include",
+              path: "company",
+              value: ["acme"],
+            },
+          ],
+        },
+      });
+
+      return expect(
+        engine.evaluate("foo", {
+          company: "acme",
+          user: "tony",
+        })
+      ).resolves.toEqual({
+        foo: true,
+      });
+    });
+
+    it("Should default to false if a gate is not found", () => {
+      const engine = new Flare({});
+
+      return expect(
+        engine.evaluate("bar", {
+          company: "acme",
+          user: "tony",
+        })
+      ).resolves.toEqual({
+        bar: false,
       });
     });
   });

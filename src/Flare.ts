@@ -65,10 +65,11 @@ class Flare {
   }
 
   // Eval the gates given an input context.
-  async evaluate(input: InputContext) {
+  async evaluateAll(input: InputContext) {
     return this.jobRunner(async () => {
       const promises: [string, EvalReturn][] = [];
 
+      // TODO reuse evaluate
       for (const [name, gate] of this.gates) {
         const context: EvalContext = {};
         for (let condition of gate.conditions) {
@@ -84,9 +85,27 @@ class Flare {
 
       return res.reduce<Flags>((acc, [name, bool]) => {
         // can get undefined when some of the vars in context are not populated
-        acc[name] = bool || false;
+        acc[name] = Boolean(bool);
         return acc;
       }, {});
+    });
+  }
+
+  // Eval a gate given an input context.
+  async evaluate(name: string, input: InputContext) {
+    return this.jobRunner(async () => {
+      const gate = this.gates.get(name);
+      if (!gate) {
+        return Promise.resolve({ [name]: false });
+      }
+
+      const context: EvalContext = {};
+      for (let condition of gate.conditions) {
+        context[condition.id] = Flare.evaluateCondition(condition, input);
+      }
+
+      const bool = await gate.eval(context);
+      return { [name]: Boolean(bool) };
     });
   }
 }

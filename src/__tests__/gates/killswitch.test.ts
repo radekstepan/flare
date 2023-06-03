@@ -8,7 +8,7 @@ describe("gates/killswitch", () => {
 
   it("should exclude everyone", async () => {
     const input = { location: "us2" };
-    const flags = await engine.evaluate(input);
+    const flags = await engine.evaluateAll(input);
 
     expect(flags["feature/off"]).toBe(false);
   });

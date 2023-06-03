@@ -3,4 +3,3 @@
 - check compile YAML result, data is considered "safe" -> flare/utils
 - publish as a package (monorepo with utils separate to remove yaml dep)
 - a UI to debug the rules
-- evaluate a single gate

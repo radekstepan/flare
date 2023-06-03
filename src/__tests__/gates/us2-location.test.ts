@@ -8,14 +8,14 @@ describe("gates/us2-location", () => {
 
   it("should include everyone in us2", async () => {
     const input = { location: "us2" };
-    const flags = await engine.evaluate(input);
+    const flags = await engine.evaluateAll(input);
 
     expect(flags["feature/foo"]).toBe(true);
   });
 
   it("should exclude everyone not in us2", async () => {
     const input = { location: "us1" };
-    const flags = await engine.evaluate(input);
+    const flags = await engine.evaluateAll(input);
 
     expect(flags["feature/foo"]).toBe(false);
   });
