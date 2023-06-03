@@ -1,5 +1,6 @@
 import type { InputContextValue, InputContext } from "./interfaces";
 
+// TODO use sindresorhus/dot-prop
 export const getProperty = (
   object: InputContext,
   path: string

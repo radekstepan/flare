@@ -1,9 +1,9 @@
 import { expect } from "@jest/globals";
 import Flare from "../../Flare";
-import loadYaml from "../../loadYaml";
+import { readYaml } from "../../utils";
 
 describe("gates/anchors", () => {
-  const data = loadYaml("anchors");
+  const data = readYaml(`${__dirname}/../../../fixtures/anchors.yml`);
   const engine = new Flare(data);
 
   it("should enable feature/foo and feature/bar for vortex", async () => {

@@ -1,8 +1,6 @@
-- parse JWT; perhaps by way of a transform function that is applied on any input payload
-- load all YAML files in a folder with an optional pattern to filter out just some
-- emit an event when an eval returns undefined (missing context value)
+- load all YAML files in a folder with an optional pattern to filter out just some -> recipe using flare/utils
 - run benchmarks for comparison (memory, CPU, speed)
-- check compile YAML result, data is considered "safe"
-- check eval statements
-- JSON spec for the data to verify
-- async start returning a job result as a promise when ready
+- check compile YAML result, data is considered "safe" -> flare/utils
+- publish as a package (monorepo with utils separate to remove yaml dep)
+- a UI to debug the rules
+- evaluate a single gate

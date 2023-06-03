@@ -1,9 +1,9 @@
 import { expect } from "@jest/globals";
 import Flare from "../../Flare";
-import loadYaml from "../../loadYaml";
+import { readYaml } from "../../utils";
 
 describe("gates/acme-but-danny", () => {
-  const data = loadYaml("acme-but-danny");
+  const data = readYaml(`${__dirname}/../../../fixtures/acme-but-danny.yml`);
   const engine = new Flare(data);
 
   it("should exclude danny from acme", async () => {

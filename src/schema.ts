@@ -8,6 +8,9 @@ export const conditionSchema = Joi.object()
     path: Joi.string()
       .pattern(/^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*$/)
       .required(),
+    value: Joi.array()
+      .items(Joi.alternatives().try(Joi.string(), Joi.number()))
+      .required(),
   })
   .required();
 
@@ -15,6 +18,5 @@ export const gateSchema = Joi.object()
   .keys({
     eval: Joi.string().required(),
     conditions: Joi.array().has(conditionSchema).required(),
-    value: Joi.array().items(Joi.string().required()).required(),
   })
   .required();

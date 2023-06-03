@@ -6,6 +6,7 @@ describe("schema", () => {
     operation: "exclude",
     kind: "context",
     path: "valid.path",
+    value: [],
   };
 
   describe("conditionSchema", () => {
@@ -94,6 +95,29 @@ describe("schema", () => {
       );
     });
 
+    it('Should throw an error for missing "value"', () => {
+      return expect(
+        conditionSchema.validateAsync({
+          id: "foo",
+          operation: "exclude",
+          kind: "context",
+          path: "key.path",
+        })
+      ).rejects.toThrow('"value" is required');
+    });
+
+    it('Should throw an error for invalid "value"', () => {
+      return expect(
+        conditionSchema.validateAsync({
+          id: "foo",
+          operation: "exclude",
+          kind: "context",
+          path: "key.path",
+          value: [{ object: { not: { supported: true } } }],
+        })
+      ).rejects.toThrow('"value[0]" must be one of [string, number]');
+    });
+
     it("Should validate a valid condition schema", () => {
       return expect(
         conditionSchema.validateAsync(validCondition)
@@ -147,31 +171,11 @@ describe("schema", () => {
       );
     });
 
-    it('Should throw an error for missing "value"', () => {
-      return expect(
-        gateSchema.validateAsync({
-          eval: "true",
-          conditions: [validCondition],
-        })
-      ).rejects.toThrow('"value" is required');
-    });
-
-    it('Should throw an error for invalid "value"', () => {
-      return expect(
-        gateSchema.validateAsync({
-          eval: "true",
-          conditions: [validCondition],
-          value: [1],
-        })
-      ).rejects.toThrow('"value[0]" must be a string');
-    });
-
     it("Should validate a valid gate schema", () => {
       return expect(
         gateSchema.validateAsync({
           eval: "true",
           conditions: [validCondition],
-          value: ["valid_value"],
         })
       ).resolves.toBeDefined();
     });

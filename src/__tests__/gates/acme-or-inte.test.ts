@@ -1,9 +1,9 @@
 import { expect } from "@jest/globals";
 import Flare from "../../Flare";
-import loadYaml from "../../loadYaml";
+import { readYaml } from "../../utils";
 
 describe("gates/acme-or-inte", () => {
-  const data = loadYaml("acme-or-inte");
+  const data = readYaml(`${__dirname}/../../../fixtures/acme-or-inte.yml`);
   const engine = new Flare(data);
 
   it("should include volantis from inte", async () => {

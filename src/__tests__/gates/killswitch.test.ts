@@ -1,9 +1,9 @@
 import { expect } from "@jest/globals";
 import Flare from "../../Flare";
-import loadYaml from "../../loadYaml";
+import { readYaml } from "../../utils";
 
 describe("gates/killswitch", () => {
-  const data = loadYaml("killswitch");
+  const data = readYaml(`${__dirname}/../../../fixtures/killswitch.yml`);
   const engine = new Flare(data);
 
   it("should exclude everyone", async () => {

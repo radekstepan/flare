@@ -1,9 +1,9 @@
 import { expect } from "@jest/globals";
 import Flare from "../../Flare";
-import loadYaml from "../../loadYaml";
+import { readYaml } from "../../utils";
 
 describe("gates/us2-location", () => {
-  const data = loadYaml("us2-location");
+  const data = readYaml(`${__dirname}/../../../fixtures/us2-location.yml`);
   const engine = new Flare(data);
 
   it("should include everyone in us2", async () => {

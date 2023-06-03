@@ -24,14 +24,14 @@ export type Eval = (context: EvalContext) => EvalReturn;
 
 export interface InputGate {
   eval: string;
-  conditions: Condition<string[]>[];
+  conditions: Condition<InputContextValue[]>[];
 }
 
 export type Data = Record<string, InputGate>;
 
 export interface CompiledGate {
   eval: Eval;
-  conditions: Condition<Set<string>>[];
+  conditions: Condition<Set<InputContextValue>>[];
 }
 
 export type Flags = Record<string, boolean>;

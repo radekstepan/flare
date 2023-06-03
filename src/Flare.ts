@@ -46,7 +46,7 @@ class Flare {
 
   // Known gate conditions.
   static evaluateCondition(
-    condition: Condition<Set<string>>,
+    condition: Condition<Set<InputContextValue>>,
     input: InputContext
   ): boolean {
     switch (condition.kind) {

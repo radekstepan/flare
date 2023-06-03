@@ -10,7 +10,7 @@ function jobRunner<T>(init: Promise<any>): DoJob<T> {
     if (result.status === "fulfilled") {
       initialized = true;
     } else {
-      failed = true;
+      failed = result.reason || "Initialization has failed";
     }
 
     while (jobQueue.length > 0) {
@@ -23,7 +23,7 @@ function jobRunner<T>(init: Promise<any>): DoJob<T> {
     return new Promise((resolve, reject) => {
       const runJob = async () => {
         if (failed) {
-          return reject("Initialization has failed");
+          return reject(failed);
         }
 
         try {
