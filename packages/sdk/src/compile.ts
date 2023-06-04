@@ -1,5 +1,5 @@
 import jexl from "jexl";
-import { Eval } from "./interfaces.js";
+import type { Eval } from "@radekstepan/flare-types";
 
 const compile = (expr: string): Eval => {
   if (expr === "true") {

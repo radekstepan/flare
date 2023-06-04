@@ -1,5 +1,5 @@
 import * as dot from "dot-prop";
-import type { InputContextValue, InputContext } from "./interfaces.js";
+import type { InputContextValue, InputContext } from "@radekstepan/flare-types";
 
 export const getProperty = (
   object: InputContext,

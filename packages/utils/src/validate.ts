@@ -1,14 +1,6 @@
-import type { PathLike } from "fs";
-import { readFile } from "fs/promises";
-import { load } from "js-yaml";
+import type { Data } from "@radekstepan/flare-types";
 import { serializeError } from "serialize-error";
 import { gateSchema } from "./schema.js";
-import type { Data } from "./interfaces.js";
-
-export const readYaml = async <T = Data>(path: PathLike): Promise<T> => {
-  const yaml = await readFile(path);
-  return load(yaml.toString()) as T;
-};
 
 export class GateSchemaError extends Error {
   gate: string;

@@ -1,6 +1,6 @@
 import test from "ava";
-import { GateSchemaError, validateData } from "../src/utils.js";
-import { InputGate } from "../src/interfaces.js";
+import type { InputGate } from "@radekstepan/flare-types";
+import { GateSchemaError, validateData } from "../src/validate.js";
 
 const goodGate: InputGate = {
   eval: "true",

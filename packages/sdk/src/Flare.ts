@@ -1,5 +1,3 @@
-import compile from "./compile.js";
-import jobRunner, { type DoJob } from "./jobRunner.js";
 import type {
   CompiledGate,
   Condition,
@@ -9,7 +7,9 @@ import type {
   InputContext,
   InputContextValue,
   Operation,
-} from "./interfaces.js";
+} from "@radekstepan/flare-types";
+import compile from "./compile.js";
+import jobRunner, { type DoJob } from "./jobRunner.js";
 import { getProperty } from "./object.js";
 
 class Flare {
