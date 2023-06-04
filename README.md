@@ -35,7 +35,7 @@ const data = Promise.resolve({
 const flare = new Flare(data);
 ```
 
-See the schema definition in `flare-utils` for how to structure the gates and their conditions. Alternatively, see the the test fixtures in this project or the recipes folder.
+See the schema definition in `utils/` for how to structure the gates and their conditions. Alternatively, see the the test fixtures in the `main/` project or the `recipes/` folder for examples.
 
 ### Evaluating Gates
 
