@@ -1,5 +1,5 @@
 - load all YAML files in a folder with an optional pattern to filter out just some -> recipe using flare/utils
-- run benchmarks for comparison (memory, CPU, speed)
-- check compile YAML result, data is considered "safe" -> flare/utils
 - publish as a package (monorepo with utils separate to remove yaml dep)
+
+- run benchmarks for comparison (memory, CPU, speed)
 - a UI to debug the rules
