@@ -1,6 +1,11 @@
-export type Operation = "exclude" | "include";
+export const enum Operation {
+  EXCLUDE = "exclude",
+  INCLUDE = "include",
+}
 
-export type Kind = "context";
+export const enum Kind {
+  CONTEXT = "context",
+}
 
 export type Condition<ValueT> = {
   id: string;
