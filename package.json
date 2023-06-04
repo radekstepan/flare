@@ -8,7 +8,8 @@
     "lerna": "^6.6.2"
   },
   "scripts": {
-    "build": "npx lerna run build",
-    "test": "npx lerna run test"
+    "build": "lerna run build",
+    "test": "lerna run test",
+    "release": "lerna publish"
   }
 }
