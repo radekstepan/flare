@@ -1,16 +1,17 @@
-# Basic example
+# Basic example with data validation
 
-Let's walk through a basic example of using the `@radekstepan/flare` library for feature flag evaluation in JavaScript.
+Let's walk through a basic example of using the `@radekstepan/flare` library for feature flag evaluation in TypeScript.
 
-```js
+```ts
 import { Flare } from "@radekstepan/flare";
 import { validate } from "@radekstepan/flare-utils";
+// NOTE: only necessary if you use TypeScript
 import { Operation, Kind } from "@radekstepan/flare-types";
 ```
 
 This section imports the necessary modules from the `@radekstepan/flare` library, including `Flare` for feature flag evaluation, `validate` for data validation, and `Operation` and `Kind` from `flare-types` for specifying flag conditions.
 
-```js
+```ts
 const data = {
   gate1: {
     eval: "user",
@@ -29,7 +30,7 @@ const data = {
 
 Here, a sample data object is defined, representing a feature flag named "gate1". It contains a single condition that checks if the user's name (accessed via the `path` property) is either "tommy" or "johnny". This condition uses the `Operation.INCLUDE` operation to determine if the user's name is included in the specified values.
 
-```js
+```ts
 const flare = new Flare(
   new Promise((resolve, reject) => {
     validate
