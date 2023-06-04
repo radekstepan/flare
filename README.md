@@ -35,6 +35,8 @@ const data = Promise.resolve({
 const flare = new Flare(data);
 ```
 
+See the schema definition in `flare-utils` for how to structure the gates and their conditions. Alternatively, see the the test fixtures in this project.
+
 ### Evaluating Gates
 
 You can evaluate a specific gate or all gates using the `evaluate` and `evaluateAll` methods respectively. Both methods return a Promise resolving to an object with gate names as keys and the result of their evaluation as values.
