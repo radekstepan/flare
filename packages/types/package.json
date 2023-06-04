@@ -2,12 +2,8 @@
   "devDependencies": {
     "del-cli": "^5.0.0",
     "lint-staged": "^13.2.2",
-    "np": "^8.0.2",
     "prettier": "^2.8.8",
     "typescript": "^5.0.4"
-  },
-  "scripts": {
-    "release": "np"
   },
   "name": "@radekstepan/flare-types",
   "version": "1.0.0",

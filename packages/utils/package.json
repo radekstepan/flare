@@ -14,7 +14,6 @@
     "c8": "^7.14.0",
     "del-cli": "^5.0.0",
     "lint-staged": "^13.2.2",
-    "np": "^8.0.2",
     "prettier": "^2.8.8",
     "sinon": "^15.1.0",
     "ts-node": "^10.9.1",
@@ -23,8 +22,7 @@
   "scripts": {
     "test": "tsc --noEmit && NODE_NO_WARNINGS=1 c8 ava",
     "test:dev": "clear ; tsc --noEmit && NODE_NO_WARNINGS=1 ava --serial --fail-fast",
-    "build": "del-cli dist && tsc",
-    "release": "np"
+    "build": "del-cli dist && tsc"
   },
   "name": "@radekstepan/flare-utils",
   "version": "1.0.0",
@@ -33,6 +31,9 @@
     "types": "./dist/index.d.ts",
     "default": "./dist/index.js"
   },
+  "files": [
+    "dist/"
+  ],
   "type": "module",
   "author": "Radek Stepan <dev@radekstepan.com>",
   "license": "MIT",
