@@ -5,7 +5,7 @@ import Flare from "../../src/Flare.js";
 let engine: Flare;
 test.before("setup", () => {
   const path = new URL("../fixtures/acme-or-inte.yml", import.meta.url);
-  const data = yaml.readYaml(path);
+  const data = yaml.readYamlData(path);
   engine = new Flare(data);
 });
 

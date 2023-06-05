@@ -1,5 +1,5 @@
 import test from "ava";
-import { conditionSchema } from "../../src/schema.js";
+import { conditionSchema } from "../src/schema.js";
 
 const validCondition = {
   id: "foo",

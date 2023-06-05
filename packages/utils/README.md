@@ -8,7 +8,7 @@ yarn add @radekstepan/flare-utils
 
 ## Usage
 
-### Gate Schema Validator
+### Gate schema validator
 
 Validate input data containing gate config against a schema to make sure it is properly formatted for `flare`. If the validation fails, it throws a `GateSchemaError` with the gate name and error message.
 
@@ -28,14 +28,14 @@ validate.validateData(data).then(() => {
 });
 ```
 
-### Read a YAML Gate
+### Read YAML data
 
-The `readYaml` function accepts a path to a YAML file and returns a promise which resolves to a `Data` object. This is useful for reading gate schemas stored in a YAML file.
+The `readYamlData` function accepts a path to a YAML file (or a directory containing YAML files) and returns a promise which resolves to a `Data` object. This is useful for reading gate schemas stored in YAML files.
 
 ```ts
 import { yaml } from "@radekstepan/flare-utils";
 
-yaml.readYaml(pathLike).then((data) => {
+yaml.readYamlData(pathLike).then((data) => {
   // Save the data to the disk or pass it to flare directly
 });
 ```

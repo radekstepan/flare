@@ -1,5 +1,5 @@
 import test from "ava";
-import { gateSchema } from "../../src/schema.js";
+import { gateSchema } from "../src/schema.js";
 
 const validCondition = {
   id: "foo",
