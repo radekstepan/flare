@@ -1,12 +1,13 @@
-import type {
-  CompiledGate,
-  Condition,
-  Data,
-  EvalContext,
-  Flags,
-  InputContext,
-  InputContextValue,
-  Operation,
+import {
+  Kind,
+  type Operation,
+  type CompiledGate,
+  type Condition,
+  type Gates,
+  type EvalContext,
+  type Flags,
+  type InputContext,
+  type InputContextValue,
 } from "@radekstepan/flare-types";
 import compile from "./compile.js";
 import jobRunner, { type DoJob } from "./jobRunner.js";
@@ -17,7 +18,7 @@ class Flare {
   jobRunner: DoJob<Flags>;
 
   // Compile the expressions and save gates.
-  constructor(dataOrPromise: Data | Promise<Data>) {
+  constructor(dataOrPromise: Gates | Promise<Gates>) {
     const promise = Promise.resolve(dataOrPromise).then((data) => {
       for (let name in data) {
         const gate = data[name];
@@ -48,7 +49,7 @@ class Flare {
     condition: Condition<Set<InputContextValue>>,
     input: InputContext
   ): boolean {
-    if (condition.kind === "context") {
+    if (condition.kind === Kind.CONTEXT) {
       const value = getProperty(input, condition.path);
       if (value === null) {
         return false;

@@ -27,12 +27,12 @@ export type EvalReturn = Promise<boolean | undefined>;
 
 export type Eval = (context: EvalContext) => EvalReturn;
 
-export interface InputGate {
+export interface Gate {
   eval: string;
   conditions: Condition<InputContextValue[]>[];
 }
 
-export type Data = Record<string, InputGate>;
+export type Gates = Record<string, Gate>;
 
 export interface CompiledGate {
   eval: Eval;

@@ -1,9 +1,10 @@
 import test from "ava";
 import mockFs from "mock-fs";
-import { readYamlPath, readYamlData } from "../src/yaml.js";
+import { readYamlPath, readYamlGates } from "../src/yaml.js";
 
 test.before(() => {
   mockFs({
+    // TODO JSON to YAML
     root: {
       "foo.yaml": 'value: "foo"',
       "baz.symlink.yaml": mockFs.symlink({
@@ -36,7 +37,7 @@ test("reads all yaml files in a directory", async (t) => {
 });
 
 test("reads all yaml files in a directory and keeps the filenames", async (t) => {
-  const result = await readYamlData("root/");
+  const result = await readYamlGates("root/");
   t.deepEqual(result, {
     value: "baz",
   });

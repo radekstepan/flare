@@ -1,5 +1,6 @@
 import test from "ava";
 import Flare from "../src/Flare.js";
+import { Kind, Operation } from "@radekstepan/flare-types";
 
 test("should allow a promise to initialize data", async (t) => {
   const engine = new Flare(
@@ -25,16 +26,16 @@ test("should evaluate a single gate", async (t) => {
       eval: "user && company",
       conditions: [
         {
-          kind: "context",
+          kind: Kind.CONTEXT,
           id: "user",
-          operation: "include",
+          operation: Operation.INCLUDE,
           path: "user",
           value: ["tony"],
         },
         {
-          kind: "context",
+          kind: Kind.CONTEXT,
           id: "company",
-          operation: "include",
+          operation: Operation.INCLUDE,
           path: "company",
           value: ["acme"],
         },
@@ -67,7 +68,7 @@ test("should default to false", (t) => {
       {
         kind: "unknown" as any,
         id: "",
-        operation: "include",
+        operation: Operation.INCLUDE,
         path: "",
         value: new Set(),
       },
@@ -80,9 +81,9 @@ test("should return false if an input path doesn't exist", (t) => {
   t.false(
     Flare.evaluateCondition(
       {
-        kind: "context",
+        kind: Kind.CONTEXT,
         id: "",
-        operation: "include",
+        operation: Operation.INCLUDE,
         path: "foo",
         value: new Set("tommy"),
       },

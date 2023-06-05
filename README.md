@@ -19,12 +19,12 @@ yarn add @radekstepan/flare
 
 ## Usage
 
-The Flare class is the main export of this package. It is used to create a new Flare instance. You need to provide a Data object or a Promise resolving to a Data object in the constructor. The Data object contains gate definitions that are compiled and stored for evaluation.
+The Flare class is the main export of this package. It is used to create a new Flare instance. You need to provide a `Gates` object or a Promise resolving to a `Gates` object in the constructor. The `Gates` object contains gate definitions that are compiled and stored for evaluation.
 
 ```ts
 import Flare from "@radekstepan/flare";
 
-const data = Promise.resolve({
+const gates = Promise.resolve({
   gate1: {
     conditions: [{...}], // Define conditions here
     eval: '{...}' // Expression to evaluate
@@ -32,7 +32,7 @@ const data = Promise.resolve({
   //...more gates
 });
 
-const flare = new Flare(data);
+const flare = new Flare(gates);
 ```
 
 See the schema definition in `utils/` for how to structure the gates and their conditions. Alternatively, see the the test fixtures in the `main/` project or the `recipes/` folder for examples.
@@ -49,6 +49,8 @@ flare.evaluateAll(inputContext)
   .then(result => console.log(result));
 ```
 
-### Validating input, YAML files
+### Validating gates, YAML files
 
-Validate input data containing gate config against a schema or to load config from YAML files see `flare-utils`.
+See `flare-utils` to:
+- validate gates against a schema
+- load input data from YAML files

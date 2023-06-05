@@ -2,7 +2,7 @@ import type { PathLike } from "fs";
 import { readFile, stat, readdir } from "fs/promises";
 import { join, extname, basename } from "path";
 import { load } from "js-yaml";
-import type { Data } from "@radekstepan/flare-types";
+import type { Gates } from "@radekstepan/flare-types";
 
 const readYamlFile = async <T>(path: PathLike): Promise<T> => {
   const yaml = await readFile(path);
@@ -12,7 +12,8 @@ const readYamlFile = async <T>(path: PathLike): Promise<T> => {
 const YAML_EXT = [".yml", ".yaml"];
 
 export const readYamlPath = async <T>(
-  path: PathLike
+  path: PathLike,
+  glob?: string // TODO
 ): Promise<Record<string, T>> => {
   const stats = await stat(path);
   const pathString = path.toString();
@@ -36,7 +37,10 @@ export const readYamlPath = async <T>(
   return {};
 };
 
-export const readYamlData = async <T = Data>(path: PathLike): Promise<T> => {
+export const readYamlGates = async <T = Gates>(
+  path: PathLike,
+  glob?: string // TODO
+): Promise<T> => {
   const files = await readYamlPath<T>(path);
   const result = {};
   for (const file in files) {

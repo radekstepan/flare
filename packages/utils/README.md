@@ -10,12 +10,12 @@ yarn add @radekstepan/flare-utils
 
 ### Gate schema validator
 
-Validate input data containing gate config against a schema to make sure it is properly formatted for `flare`. If the validation fails, it throws a `GateSchemaError` with the gate name and error message.
+Validate input `Gates` containing gate config against a schema to make sure it is properly formatted for `flare`. If the validation fails, it throws a `GateSchemaError` with the gate name and error message.
 
 ```ts
 import {validate} from "@radekstepan/flare-utils";
 
-const data = {
+const gates = {
   gate1: {
     conditions: [{...}], // Define conditions here
     eval: '{...}' // Expression to evaluate
@@ -23,19 +23,19 @@ const data = {
   //...more gates
 };
 
-validate.validateData(data).then(() => {
+validate.validateGates(gates).then(() => {
   // Everything is OK
 });
 ```
 
-### Read YAML data
+### Read YAML gates
 
-The `readYamlData` function accepts a path to a YAML file (or a directory containing YAML files) and returns a promise which resolves to a `Data` object. This is useful for reading gate schemas stored in YAML files.
+The `readYamlGates` function accepts a path to a YAML file (or a directory containing YAML files) and returns a promise which resolves to the `Gates` object. This is useful for reading gate schemas stored in YAML files.
 
 ```ts
 import { yaml } from "@radekstepan/flare-utils";
 
-yaml.readYamlData(pathLike).then((data) => {
-  // Save the data to the disk or pass it to flare directly
+yaml.readYamlGates(pathLike).then((gates) => {
+  // Save the gates to the disk or pass it to flare directly
 });
 ```

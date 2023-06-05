@@ -1,14 +1,14 @@
 import test from "ava";
-import type { InputGate } from "@radekstepan/flare-types";
-import { GateSchemaError, validateData } from "../src/validate.js";
+import { Operation, Kind, type Gate } from "@radekstepan/flare-types";
+import { GateSchemaError, validateGates } from "../src/validate.js";
 
-const goodGate: InputGate = {
+const goodGate: Gate = {
   eval: "true",
   conditions: [
     {
       id: "foo",
-      operation: "exclude",
-      kind: "context",
+      operation: Operation.EXCLUDE,
+      kind: Kind.CONTEXT,
       path: "valid.path",
       value: ["1"],
     },
@@ -16,13 +16,13 @@ const goodGate: InputGate = {
 };
 const badGate = {
   eval: "true",
-} as InputGate;
+} as Gate;
 
 test("should throw an error on invalid input data", async (t) => {
   const error = new GateSchemaError("badGate", '"conditions" is required');
 
   const [res] = await Promise.allSettled([
-    validateData({
+    validateGates({
       goodGate,
       badGate,
     }),
