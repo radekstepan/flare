@@ -4,8 +4,8 @@
     "jexl": "^2.3.0"
   },
   "devDependencies": {
-    "@radekstepan/flare-types": "*",
-    "@radekstepan/flare-utils": "*",
+    "@radekstepan/flare-types": "^1.0.0",
+    "@radekstepan/flare-utils": "^1.0.0",
     "@types/jexl": "^2.3.1",
     "@types/js-yaml": "^4.0.5",
     "@types/node": "^20.2.5",

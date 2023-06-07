@@ -6,7 +6,7 @@
     "serialize-error": "^11.0.0"
   },
   "devDependencies": {
-    "@radekstepan/flare-types": "*",
+    "@radekstepan/flare-types": "^1.0.0",
     "@types/jexl": "^2.3.1",
     "@types/js-yaml": "^4.0.5",
     "@types/mock-fs": "^4.13.1",
