@@ -9,6 +9,6 @@
   "scripts": {
     "build": "lerna run build",
     "test": "lerna run test",
-    "release": "lerna publish"
+    "release": "lerna publish --registry=https://npm.pkg.github.com/"
   }
 }
