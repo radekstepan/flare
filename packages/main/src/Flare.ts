@@ -6,8 +6,8 @@ import {
   type Gates,
   type EvalContext,
   type Flags,
-  type InputContext,
-  type InputContextValue,
+  type Context,
+  type ContextValue,
 } from "@radekstepan/flare-types";
 import compile from "./compile.js";
 import jobRunner, { type DoJob } from "./jobRunner.js";
@@ -38,7 +38,7 @@ class Flare {
   // Known gate condition operations.
   static conditionOperations: Record<
     Operation,
-    (set: Set<InputContextValue>, value: InputContextValue) => boolean
+    (set: Set<ContextValue>, value: ContextValue) => boolean
   > = {
     exclude: (set, value) => !set.has(value),
     include: (set, value) => set.has(value),
@@ -46,11 +46,11 @@ class Flare {
 
   // Known gate conditions.
   static evaluateCondition(
-    condition: Condition<Set<InputContextValue>>,
-    input: InputContext
+    condition: Condition<Set<ContextValue>>,
+    context: Context
   ): boolean {
     if (condition.kind === Kind.CONTEXT) {
-      const value = getProperty(input, condition.path);
+      const value = getProperty<ContextValue>(context, condition.path);
       if (value === null) {
         return false;
       }
@@ -64,28 +64,30 @@ class Flare {
   }
 
   // Eval a gate given an input context.
-  async evaluate(name: string, input: InputContext) {
+  async evaluate(name: string, context: Context) {
     return this.jobRunner(async () => {
       const gate = this.gates.get(name);
       if (!gate) {
         return Promise.resolve({ [name]: false });
       }
 
-      const context: EvalContext = {};
+      const evalContext: EvalContext = {};
       for (let condition of gate.conditions) {
-        context[condition.id] = Flare.evaluateCondition(condition, input);
+        evalContext[condition.id] = Flare.evaluateCondition(condition, context);
       }
 
-      const bool = await gate.eval(context);
+      const bool = await gate.eval(evalContext);
       return { [name]: Boolean(bool) };
     });
   }
 
   // Eval the gates given an input context.
-  async evaluateAll(input: InputContext) {
+  async evaluateAll(context: Context) {
     return this.jobRunner(async () => {
       const res: Flags[] = await Promise.all(
-        Array.from(this.gates.keys()).map((name) => this.evaluate(name, input))
+        Array.from(this.gates.keys()).map((name) =>
+          this.evaluate(name, context)
+        )
       );
 
       return res.reduce<Flags>(

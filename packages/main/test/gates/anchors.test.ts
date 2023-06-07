@@ -4,8 +4,7 @@ import Flare from "../../src/Flare.js";
 
 let engine: Flare;
 test.before("setup", () => {
-  const path = new URL("../fixtures/anchors.yml", import.meta.url);
-  const gates = yaml.readYamlGates(path);
+  const gates = yaml.readYamlGates("test/fixtures/anchors.yml");
   engine = new Flare(gates);
 });
 

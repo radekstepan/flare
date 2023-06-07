@@ -15,10 +15,10 @@ export type Condition<ValueT> = {
   value: ValueT;
 };
 
-export type InputContextValue = string | number;
+export type ContextValue = string | number;
 
-export type InputContext = {
-  [key: string]: InputContextValue | InputContext;
+export type Context = {
+  [key: string]: ContextValue | Context;
 };
 
 export type EvalContext = Record<string, boolean>;
@@ -29,14 +29,14 @@ export type Eval = (context: EvalContext) => EvalReturn;
 
 export interface Gate {
   eval: string;
-  conditions: Condition<InputContextValue[]>[];
+  conditions: Condition<ContextValue[]>[];
 }
 
 export type Gates = Record<string, Gate>;
 
 export interface CompiledGate {
   eval: Eval;
-  conditions: Condition<Set<InputContextValue>>[];
+  conditions: Condition<Set<ContextValue>>[];
 }
 
 export type Flags = Record<string, boolean>;

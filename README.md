@@ -42,10 +42,10 @@ See the schema definition in `utils/` for how to structure the gates and their c
 You can evaluate a specific gate or all gates using the `evaluate` and `evaluateAll` methods respectively. Both methods return a Promise resolving to an object with gate names as keys and the result of their evaluation as values.
 
 ```js
-flare.evaluate("gate1", inputContext)
+flare.evaluate("gate1", context)
   .then(result => console.log(result));
 
-flare.evaluateAll(inputContext)
+flare.evaluateAll(context)
   .then(result => console.log(result));
 ```
 

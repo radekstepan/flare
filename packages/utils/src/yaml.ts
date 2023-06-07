@@ -1,47 +1,33 @@
-import type { PathLike } from "fs";
-import { readFile, stat, readdir } from "fs/promises";
-import { join, extname, basename } from "path";
+import { readFile } from "fs/promises";
+import { glob, type GlobOptions } from "glob";
+import type { PathBase } from "path-scurry";
 import { load } from "js-yaml";
 import type { Gates } from "@radekstepan/flare-types";
 
-const readYamlFile = async <T>(path: PathLike): Promise<T> => {
-  const yaml = await readFile(path);
-  return load(yaml.toString()) as T;
+export const readYamlFile = async <T>(
+  path: string | PathBase
+): Promise<[string, T]> => {
+  const fullPath = typeof path === "string" ? path : path.fullpath();
+  const yaml = await readFile(fullPath);
+  return [fullPath, load(yaml.toString()) as T];
 };
 
-const YAML_EXT = [".yml", ".yaml"];
-
 export const readYamlPath = async <T>(
-  path: PathLike,
-  glob?: string // TODO
+  pattern: string | string[],
+  options?: GlobOptions
 ): Promise<Record<string, T>> => {
-  const stats = await stat(path);
-  const pathString = path.toString();
+  const paths = await (options ? glob(pattern, options) : glob(pattern));
 
-  if (stats.isFile() && YAML_EXT.includes(extname(pathString))) {
-    return { [basename(pathString)]: await readYamlFile(path) };
-  }
+  const results = await Promise.all(paths.map((path) => readYamlFile<T>(path)));
 
-  if (stats.isDirectory()) {
-    const dirents = await readdir(path);
-    const results = await Promise.all(
-      dirents.map(async (dirent) => {
-        const fullPath = join(pathString, dirent);
-        return readYamlPath(fullPath);
-      })
-    );
-
-    return Object.assign({}, ...results);
-  }
-
-  return {};
+  return Object.fromEntries(results);
 };
 
 export const readYamlGates = async <T = Gates>(
-  path: PathLike,
-  glob?: string // TODO
+  pattern: string | string[],
+  options?: GlobOptions
 ): Promise<T> => {
-  const files = await readYamlPath<T>(path);
+  const files = await readYamlPath<T>(pattern, options);
   const result = {};
   for (const file in files) {
     Object.assign(result, files[file]);

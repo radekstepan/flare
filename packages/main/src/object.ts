@@ -1,10 +1,6 @@
 import * as dot from "dot-prop";
-import type { InputContextValue, InputContext } from "@radekstepan/flare-types";
 
-export const getProperty = (
-  object: InputContext,
-  path: string
-): InputContextValue | null => {
+export const getProperty = <T>(object: any, path: string): T | null => {
   if (typeof path !== "string") {
     return null;
   }
