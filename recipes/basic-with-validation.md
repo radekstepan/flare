@@ -51,4 +51,4 @@ flare.evaluate("gate1", { name: "johnny" }).then((res) => {
 });
 ```
 
-Finally, the `evaluate` method of the `flare` object is called with the flag name ("gate1") and an object representing the user's context ({name: "johnny"}). This method returns a Promise that resolves with the evaluation result. In this example, the result is logged to the console.
+Finally, the `evaluate` method of the `flare` object is called with the flag name ("gate1") and an object representing the user's context (`{name: "johnny"}`). This method returns a Promise that resolves with the evaluation result. In this example, the result is logged to the console.

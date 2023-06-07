@@ -37,8 +37,6 @@ const flare = new Flare(gates);
 
 See the schema definition in `utils/` for how to structure the gates and their conditions. Alternatively, see the the test fixtures in the `main/` project or the `recipes/` folder for examples.
 
-### Evaluating Gates
-
 You can evaluate a specific gate or all gates using the `evaluate` and `evaluateAll` methods respectively. Both methods return a Promise resolving to an object with gate names as keys and the result of their evaluation as values.
 
 ```js
@@ -49,8 +47,9 @@ flare.evaluateAll(context)
   .then(result => console.log(result));
 ```
 
-### Validating gates, YAML files
+### Recipes
 
-See `flare-utils` to:
-- validate gates against a schema
-- load input data from YAML files
+1. [Basic example with data validation](recipes/basic-with-validation.md)
+2. [Parsing YAML files](recipes/parse-yaml.md)
+3. [Glob patterns](recipes/glob-patterns.md)
+4. [Parsing YAML files from a git repo with validation](recipes/git-parse-yaml-with-validation.md)

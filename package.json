@@ -10,6 +10,6 @@
   "scripts": {
     "build": "lerna run build",
     "test": "lerna run test",
-    "release": "lerna publish --registry=http://localhost:4873/"
+    "release": "lerna publish"
   }
 }
