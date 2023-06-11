@@ -3,14 +3,14 @@
 This TypeScript script clones a GitHub repository, reads and validates YAML files in the repository according to the `Gates` schema, and saves the data in a JSON file locally.
 
 ```ts
-import fs from 'fs/promises';
-import path from 'path';
-import {simpleGit} from 'simple-git';
-import { dir as tmpDir } from 'tmp-promise';
-import {validate, yaml} from "@radekstepan/flare-utils";
+import fs from "fs/promises";
+import path from "path";
+import { simpleGit } from "simple-git";
+import { dir as tmpDir } from "tmp-promise";
+import { validate, yaml } from "@radekstepan/flare-utils";
 
 // Repo to clone
-const repo = 'git@github.com:radekstepan/flare.git';
+const repo = "git@github.com:radekstepan/flare.git";
 
 // The path where to save the output
 const savePath = path.join(`${process.cwd()}/data.json`);
@@ -33,14 +33,14 @@ async function job() {
   const git = simpleGit(tempDirPath);
 
   // Check out the master branch
-  await git.checkout('master');
+  await git.checkout("master");
 ```
 
 The `job` function begins by creating a temporary directory using `tmp-promise`. It then clones the repository into this temporary directory using `simple-git`. After cloning, it changes the current working directory to the cloned repository's location. The `simpleGit` instance `git` is then used to switch to the 'master' branch.
 
 ```ts
   // Parse all the YAML files.
-  const data = await yaml.readYamlGates('**/fixtures/**/*.yml');
+  const data = await yaml.readYamlGates("**/fixtures/**/*.yml");
 ```
 
 This line uses the `readYamlGates` function from `@radekstepan/flare-utils` to read and parse all YAML files located in 'fixtures' directory or any of its subdirectories.

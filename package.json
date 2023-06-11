@@ -3,12 +3,14 @@
   "workspaces": [
     "packages/*"
   ],
+  "private": true,
   "devDependencies": {
     "lerna": "^6.6.2"
   },
   "scripts": {
     "build": "lerna run build",
     "test": "lerna run test",
-    "release": "lerna publish --registry=https://npm.pkg.github.com/"
+    "release": "lerna publish --registry=https://npm.pkg.github.com/",
+    "start": "lerna run start --scope=@radekstepan/flare-playground"
   }
 }

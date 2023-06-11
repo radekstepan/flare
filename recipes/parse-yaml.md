@@ -10,7 +10,7 @@ import { yaml } from "@radekstepan/flare-utils";
 This section imports the necessary modules from the `@radekstepan/flare` library, including `Flare` for feature flag evaluation and `yaml` for parsing YAML files.
 
 ```ts
-const data = yaml.readYamlGates('fixtures/*.yml');
+const data = yaml.readYamlGates("fixtures/*.yml");
 ```
 
 On this line, we're using the `readYamlGates` function to parse YAML files located in the fixtures directory (indicated by the `fixtures/*.yml` [glob](https://github.com/isaacs/node-glob#readme) pattern). The paths are relative to the current working directory.
