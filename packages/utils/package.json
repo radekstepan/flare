@@ -26,14 +26,17 @@
   "scripts": {
     "test": "tsc --noEmit && NODE_NO_WARNINGS=1 c8 ava",
     "test:dev": "clear ; tsc --noEmit && NODE_NO_WARNINGS=1 ava --serial --fail-fast",
-    "build": "del-cli dist && tsc"
+    "build:node": "tsc -p tsconfig.node.json",
+    "build:browser": "tsc -p tsconfig.browser.json",
+    "build": "del-cli dist && yarn run build:node && yarn run build:browser"
   },
   "name": "@radekstepan/flare-utils",
   "version": "1.0.0",
-  "main": "./dist/index.js",
+  "main": "./dist/node/index.node.js",
   "exports": {
-    "types": "./dist/index.d.ts",
-    "default": "./dist/index.js"
+    "types": "./dist/node/index.node.d.ts",
+    "default": "./dist/node/index.node.js",
+    "module": "./dist/browser/index.browser.js"
   },
   "files": [
     "dist/"

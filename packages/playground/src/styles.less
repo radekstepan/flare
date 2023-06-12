@@ -20,9 +20,14 @@
     margin: auto;
 
     .title {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 500;
       margin-bottom: 10px;
+
+      a {
+        color: darken(#4183c4, 0%);
+        text-decoration: none;
+      }
     }
 
     .em {
@@ -32,6 +37,10 @@
     }
 
     .section {
+      &:first-child {
+        line-height: 17px;
+      }
+
       &:not(:first-child) {
         margin-top: 20px;
       }
@@ -52,38 +61,38 @@
       }
     }
 
-    .button {
-      border: 1px solid @buttonBorder;
-      background: @buttonBg;
-      border-radius: 4px;
-      min-width: 32px;
-      height: 32px;
-      line-height: 32px;
-      transition: box-shadow 80ms ease-in-out;
-      color: #fff;
-      padding: 1px 12px;
-      display: inline-flex;
-      align-items: center;
-      box-sizing: border-box;
-      user-select: none;
-      cursor: pointer;
+    // .button {
+    //   border: 1px solid @buttonBorder;
+    //   background: @buttonBg;
+    //   border-radius: 4px;
+    //   min-width: 32px;
+    //   height: 32px;
+    //   line-height: 32px;
+    //   transition: box-shadow 80ms ease-in-out;
+    //   color: #fff;
+    //   padding: 1px 12px;
+    //   display: inline-flex;
+    //   align-items: center;
+    //   box-sizing: border-box;
+    //   user-select: none;
+    //   cursor: pointer;
 
-      &:active {
-        border-color: darken(@buttonBorder, 10%);
-        background: darken(@buttonBg, 10%);
-      }
+    //   &:active {
+    //     border-color: darken(@buttonBorder, 10%);
+    //     background: darken(@buttonBg, 10%);
+    //   }
 
-      &:focus {
-        border-color: darken(@buttonBorder, 5%);
-        background: darken(@buttonBg, 5%);
-        box-shadow: 0 0 0 2px #d6e0ff;
-      }
+    //   &:focus {
+    //     border-color: darken(@buttonBorder, 5%);
+    //     background: darken(@buttonBg, 5%);
+    //     box-shadow: 0 0 0 2px #d6e0ff;
+    //   }
 
-      &:hover {
-        border-color: darken(@buttonBorder, 2%);
-        background: darken(@buttonBg, 5%);
-      }
-    }
+    //   &:hover {
+    //     border-color: darken(@buttonBorder, 2%);
+    //     background: darken(@buttonBg, 5%);
+    //   }
+    // }
 
     .output {
       font-family: "Fira Code", monospace;
@@ -91,6 +100,13 @@
       border: 1px solid #e8e5e8;
       background: #fbfbfa;
       padding: 10px;
+      line-height: 15px;
+
+      .block {
+        &:not(:first-child) {
+          margin-top: 10px;
+        }
+      }
 
       .error,
       .success {
@@ -98,12 +114,19 @@
       }
 
       .error {
-        color: #d7735f;
+        color: #e3116c;
+        background: #fde2ed;
+        overflow: auto;
       }
 
       .success {
         color: #690;
         background: rgba(220, 240, 218, 0.5);
+      }
+
+      pre {
+        margin: 0;
+        color: #625666;
       }
     }
   }

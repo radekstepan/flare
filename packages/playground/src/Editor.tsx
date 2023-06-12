@@ -4,20 +4,21 @@ import CodeEditor from "react-simple-code-editor";
 import { highlight, languages } from "prismjs/components/prism-core";
 import "prismjs/components/prism-yaml";
 import "prismjs/components/prism-json";
+import { useAtom, type Atom } from "jotai";
 
 interface Props {
-  value: string;
   lang: string;
+  atom: Atom<string>;
 }
 
-const Editor: FC<Props> = ({ value, lang }) => {
-  const [code, setCode] = React.useState(value);
+const Editor: FC<Props> = ({ lang, atom }) => {
+  const [text, setText] = useAtom(atom);
 
   return (
     <CodeEditor
       className="editor"
-      value={code}
-      onValueChange={(code) => setCode(code)}
+      value={text}
+      onValueChange={setText}
       highlight={(code) => highlight(code, languages[lang])}
       padding={10}
       style={{

@@ -1,3 +1,4 @@
+import { URL, fileURLToPath } from "url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
@@ -10,6 +11,10 @@ export default defineConfig({
   resolve: {
     alias: {
       "node-fetch": "cross-fetch",
+      // TODO the node types still come back
+      "@radekstepan/flare-utils": fileURLToPath(
+        new URL("../utils/dist/browser/index.browser.js", import.meta.url)
+      ),
     },
   },
   define: {

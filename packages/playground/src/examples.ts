@@ -1,4 +1,4 @@
-export const yaml = `"feature/foo":
+export const gates = `"feature/foo":
   # allow everyone from "acme" but "danny"
   eval: "true && IncludeCompany && ExcludeUser"
   conditions:
@@ -16,7 +16,7 @@ export const yaml = `"feature/foo":
         - danny
 `;
 
-export const json = `{
+export const context = `{
   "company": "acme",
   "user": "danny"
 }`;
