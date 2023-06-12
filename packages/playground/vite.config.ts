@@ -11,6 +11,9 @@ export default defineConfig({
   resolve: {
     alias: {
       "node-fetch": "cross-fetch",
+      "@radekstepan/flare": fileURLToPath(
+        new URL("../main/dist/index.js", import.meta.url)
+      ),
       // TODO the node types still come back
       "@radekstepan/flare-utils": fileURLToPath(
         new URL("../utils/dist/browser/index.browser.js", import.meta.url)
