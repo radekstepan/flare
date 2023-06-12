@@ -1,4 +1,3 @@
 [build]
-  base = "packages/playground"
   command = "yarn build"
-  publish = "dist"
+  publish = "packages/playground/dist"
