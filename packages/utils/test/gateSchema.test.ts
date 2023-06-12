@@ -72,7 +72,22 @@ test('should throw an error for invalid "conditions"', async (t) => {
   t.is(res.status, "rejected");
   t.is(
     (res as PromiseRejectedResult).reason.message,
-    '"conditions" does not contain at least one required match'
+    '"conditions[0]" must be of type object'
+  );
+});
+
+test('should throw an error for one invalid "conditions"', async (t) => {
+  const [res] = await Promise.allSettled([
+    gateSchema.validateAsync({
+      eval: "true",
+      conditions: [validCondition, {}],
+    }),
+  ]);
+
+  t.is(res.status, "rejected");
+  t.is(
+    (res as PromiseRejectedResult).reason.message,
+    '"conditions[1].id" is required'
   );
 });
 

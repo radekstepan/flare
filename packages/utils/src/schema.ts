@@ -17,6 +17,6 @@ export const conditionSchema = Joi.object()
 export const gateSchema = Joi.object()
   .keys({
     eval: Joi.string().required(),
-    conditions: Joi.array().has(conditionSchema).required(),
+    conditions: Joi.array().items(conditionSchema).required(),
   })
   .required();
