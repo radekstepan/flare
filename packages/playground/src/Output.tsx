@@ -1,4 +1,4 @@
-import React, { type FC } from "react";
+import React from "react";
 import { useAsync } from "react-use";
 import { load } from "js-yaml";
 import { useAtomValue } from "jotai";

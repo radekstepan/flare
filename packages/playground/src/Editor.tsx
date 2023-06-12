@@ -1,7 +1,6 @@
 import React, { type FC } from "react";
 import CodeEditor from "react-simple-code-editor";
-// @ts-expect-error
-import { highlight, languages } from "prismjs/components/prism-core";
+import Prism from "prismjs";
 import "prismjs/components/prism-yaml";
 import "prismjs/components/prism-json";
 import { useAtom, type Atom } from "jotai";
@@ -19,7 +18,7 @@ const Editor: FC<Props> = ({ lang, atom }) => {
       className="editor"
       value={text}
       onValueChange={setText}
-      highlight={(code) => highlight(code, languages[lang])}
+      highlight={(code) => Prism.highlight(code, Prism.languages[lang], lang)}
       padding={10}
       style={{
         fontFamily: '"Fira Code", monospace',
