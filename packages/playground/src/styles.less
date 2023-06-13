@@ -6,6 +6,7 @@
 
 @buttonBorder: #00af2a;
 @buttonBg: #00d332;
+@monospaceFont: "Fira Code", monospace;
 
 #root {
   font-family: "Fira Sans", sans-serif;
@@ -95,7 +96,7 @@
     // }
 
     .output {
-      font-family: "Fira Code", monospace;
+      font-family: @monospaceFont;
       font-size: 12px;
       border: 1px solid #e8e5e8;
       background: #fbfbfa;
@@ -127,6 +128,7 @@
       pre {
         margin: 0;
         color: #625666;
+        font-family: @monospaceFont;
       }
     }
   }

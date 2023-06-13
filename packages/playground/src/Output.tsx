@@ -12,11 +12,11 @@ function Output() {
   const context = useAtomValue(contextInput);
 
   const state = useAsync(async () => {
+    const gates = load(yamlGates) as Gates;
+    await validate.validateGates(gates);
     if (!context) {
       return;
     }
-    const gates = load(yamlGates) as Gates;
-    await validate.validateGates(gates);
     const flare = new Flare(gates);
     const res = await flare.evaluateAll(JSON.parse(context) as Context);
     return JSON.stringify(res, null, 2);
