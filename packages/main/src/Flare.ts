@@ -38,10 +38,10 @@ class Flare {
   // Known gate condition operations.
   static conditionOperations: Record<
     Operation,
-    (set: Set<ContextValue>, value: ContextValue) => boolean
+    (set: Set<ContextValue>, value: ContextValue | null) => boolean
   > = {
-    exclude: (set, value) => !set.has(value),
-    include: (set, value) => set.has(value),
+    exclude: (set, value) => (value === null ? true : !set.has(value)),
+    include: (set, value) => (value === null ? false : set.has(value)),
   };
 
   // Known gate conditions.
@@ -51,9 +51,6 @@ class Flare {
   ): boolean {
     if (condition.kind === Kind.CONTEXT) {
       const value = getProperty<ContextValue>(context, condition.path);
-      if (value === null) {
-        return false;
-      }
       return Flare.conditionOperations[condition.operation](
         condition.value,
         value

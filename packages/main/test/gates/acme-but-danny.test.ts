@@ -22,6 +22,13 @@ test("should include other users from acme", async (t) => {
   t.true(flags["feature/foo"]);
 });
 
+test("should include other users from acme if the user context is empty", async (t) => {
+  const input = { company: "acme", location: "us2" };
+  const flags = await engine.evaluateAll(input);
+
+  t.true(flags["feature/foo"]);
+});
+
 test("should exclude users from other companies", async (t) => {
   const input = { company: "foobar", user: "johnny", location: "us2" };
   const flags = await engine.evaluateAll(input);

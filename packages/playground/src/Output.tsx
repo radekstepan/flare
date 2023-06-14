@@ -11,27 +11,34 @@ function Output() {
   const yamlGates = useAtomValue(gatesInput);
   const context = useAtomValue(contextInput);
 
-  const state = useAsync(async () => {
+  const { loading, error, value } = useAsync(async () => {
     const gates = load(yamlGates) as Gates;
     await validate.validateGates(gates);
+    const n = Object.keys(gates).length;
     if (!context) {
-      return;
+      return { n };
     }
     const flare = new Flare(gates);
     const res = await flare.evaluateAll(JSON.parse(context) as Context);
-    return JSON.stringify(res, null, 2);
+    return { n, evaluated: JSON.stringify(res, null, 2) };
   }, [yamlGates, context]);
 
   return (
     <div className="output">
-      {!state.loading && (
+      {!loading && (
         <>
-          {state.error ? (
-            <pre className="block error">{state.error.toString()}</pre>
-          ) : (
-            <span className="block success">YAML gates pass validation</span>
+          {error && <pre className="block error">{error.toString()}</pre>}
+          {value && (
+            <>
+              <span className="block success">
+                YAML gate{value.n > 1 && "s"} pass{value.n < 2 && "es"}{" "}
+                validation
+              </span>
+              {value.evaluated && (
+                <pre className="block">{value.evaluated}</pre>
+              )}
+            </>
           )}
-          {state.value && <pre className="block">{state.value}</pre>}
         </>
       )}
     </div>

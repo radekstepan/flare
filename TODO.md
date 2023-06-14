@@ -1,9 +1,15 @@
-- if you do not provide a path in the context, we should default the value to null
-- return the gates from validateGates
-- add the name of the gate directly into the validation message
+core:
 - return false from eval if the result isn't boolean
-- gate vs gates in the success message of the playground
-- make sure condition ids are unique
 
+validator:
+- put the name of the gate into the rejected promise
+- make sure condition ids are unique
+- make sure gate name is a string (slug)
+- return the gates from validateGates
+- throw an error if there are no gates; e.g. "5555" is {}
+
+extras:
 - run benchmarks for comparison (memory, CPU, speed)
 - share a URL with the input to playground
+- Netlify badge
+- GitHub Actions CI
