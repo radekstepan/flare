@@ -6,7 +6,7 @@ const validCondition = {
   operation: "exclude",
   kind: "context",
   path: "valid.path",
-  value: [],
+  value: ["a"],
 };
 
 test("should throw an error for invalid root value", async (t) => {
@@ -58,6 +58,21 @@ test('should throw an error for missing "conditions"', async (t) => {
   t.is(
     (res as PromiseRejectedResult).reason.message,
     '"conditions" is required'
+  );
+});
+
+test('should throw an error for empty "conditions"', async (t) => {
+  const [res] = await Promise.allSettled([
+    gateSchema.validateAsync({
+      eval: "true",
+      conditions: [],
+    }),
+  ]);
+
+  t.is(res.status, "rejected");
+  t.is(
+    (res as PromiseRejectedResult).reason.message,
+    '"conditions" does not contain 1 required value(s)'
   );
 });
 

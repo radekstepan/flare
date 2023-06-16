@@ -6,7 +6,7 @@ const validCondition = {
   operation: "exclude",
   kind: "context",
   path: "valid.path",
-  value: [],
+  value: ["a"],
 };
 
 test("should throw an error for invalid root value", async (t) => {
@@ -134,7 +134,7 @@ test('should throw an error for invalid "path"', async (t) => {
   t.is(res.status, "rejected");
   t.is(
     (res as PromiseRejectedResult).reason.message,
-    '"path" with value "./" fails to match the required pattern: /^[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*$/'
+    '"path" with value "./" fails to match the required pattern: /^[a-z0-9]+(\\.[a-z0-9]+)*$/i'
   );
 });
 
@@ -150,6 +150,42 @@ test('should throw an error for missing "value"', async (t) => {
 
   t.is(res.status, "rejected");
   t.is((res as PromiseRejectedResult).reason.message, '"value" is required');
+});
+
+test('should throw an error for empty "value"', async (t) => {
+  const [res] = await Promise.allSettled([
+    conditionSchema.validateAsync({
+      id: "foo",
+      operation: "exclude",
+      kind: "context",
+      path: "key.path",
+      value: [],
+    }),
+  ]);
+
+  t.is(res.status, "rejected");
+  t.is(
+    (res as PromiseRejectedResult).reason.message,
+    '"value" must contain at least 1 items'
+  );
+});
+
+test('should throw an error for empty item inside "value"', async (t) => {
+  const [res] = await Promise.allSettled([
+    conditionSchema.validateAsync({
+      id: "foo",
+      operation: "exclude",
+      kind: "context",
+      path: "key.path",
+      value: [""],
+    }),
+  ]);
+
+  t.is(res.status, "rejected");
+  t.is(
+    (res as PromiseRejectedResult).reason.message,
+    '"value[0]" is not allowed to be empty'
+  );
 });
 
 test('should throw an error for invalid "value"', async (t) => {

@@ -1,6 +1,6 @@
 import test from "ava";
 import { Operation, Kind, type Gate } from "@radekstepan/flare-types";
-import { GateSchemaError, validateGates } from "../src/validate.js";
+import { validateGates } from "../src/validate.js";
 
 const goodGate: Gate = {
   eval: "true",
@@ -19,8 +19,6 @@ const badGate = {
 } as Gate;
 
 test("should throw an error on invalid input data", async (t) => {
-  const error = new GateSchemaError("badGate", '"conditions" is required');
-
   const [res] = await Promise.allSettled([
     validateGates({
       goodGate,
@@ -28,5 +26,8 @@ test("should throw an error on invalid input data", async (t) => {
     }),
   ]);
 
-  t.like(res, { status: "rejected", reason: error });
+  t.like(res, {
+    status: "rejected",
+    reason: '"badGate.conditions" is required',
+  });
 });

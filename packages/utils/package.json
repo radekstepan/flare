@@ -24,8 +24,8 @@
     "typescript": "^5.0.4"
   },
   "scripts": {
-    "test": "tsc --noEmit && NODE_NO_WARNINGS=1 c8 ava",
-    "test:dev": "clear ; tsc --noEmit && NODE_NO_WARNINGS=1 ava --serial --fail-fast",
+    "test": "tsc -p tsconfig.node.json --noEmit && NODE_NO_WARNINGS=1 c8 ava",
+    "test:dev": "clear ; tsc -p tsconfig.node.json --noEmit && NODE_NO_WARNINGS=1 ava --serial --fail-fast",
     "build:node": "tsc -p tsconfig.node.json",
     "build:browser": "tsc -p tsconfig.browser.json",
     "build": "del-cli dist && yarn run build:node && yarn run build:browser"
