@@ -51,14 +51,14 @@ test("should throw an error for invalid gate name", async (t) => {
 test("should validate a valid gates schema", async (t) => {
   const [res] = await Promise.allSettled([
     gatesSchema.validateAsync({
-      "foo/bar": validGate,
+      "foo/bar-baz": validGate,
     }),
   ]);
 
   t.like(res, {
     status: "fulfilled",
     value: {
-      "foo/bar": validGate,
+      "foo/bar-baz": validGate,
     },
   });
 });

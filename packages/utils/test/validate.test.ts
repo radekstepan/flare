@@ -31,3 +31,16 @@ test("should throw an error on invalid input data", async (t) => {
     reason: '"badGate.conditions" is required',
   });
 });
+
+test("should return the input gates when succesfull", async (t) => {
+  const [res] = await Promise.allSettled([
+    validateGates({
+      goodGate,
+    }),
+  ]);
+
+  t.like(res, {
+    status: "fulfilled",
+    value: { goodGate },
+  });
+});

@@ -24,7 +24,7 @@ export const gateSchema = Joi.object()
 
 export const gatesSchema = Joi.object()
   .pattern(
-    /^[a-z0-9]+(\/[a-z0-9]+)*$/i, // slug delimited by a "/"
+    /^[a-z0-9]+((?:\/|\-)[a-z0-9]+)*$/i, // slug delimited by a "/" or "-"
     gateSchema
   )
   .required()
