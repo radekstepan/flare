@@ -74,7 +74,10 @@ class Flare {
       }
 
       const bool = await gate.eval(evalContext);
-      return { [name]: Boolean(bool) };
+      return {
+        // Default expression result to false.
+        [name]: typeof bool !== "boolean" ? false : bool,
+      };
     });
   }
 

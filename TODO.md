@@ -1,6 +1,3 @@
-core:
-- return false from eval if the result isn't boolean
-
 validator:
 - make sure condition ids are unique
 

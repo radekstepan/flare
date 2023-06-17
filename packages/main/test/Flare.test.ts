@@ -51,7 +51,38 @@ test("should evaluate a single gate", async (t) => {
   t.like(flags, { foo: true });
 });
 
-test("should default to false if a gate is not found", async (t) => {
+test("should return false if the expression result isn't boolean", async (t) => {
+  const engine = new Flare({
+    foo: {
+      eval: "0 + 1",
+      conditions: [
+        {
+          kind: Kind.CONTEXT,
+          id: "user",
+          operation: Operation.INCLUDE,
+          path: "user",
+          value: ["tony"],
+        },
+        {
+          kind: Kind.CONTEXT,
+          id: "company",
+          operation: Operation.INCLUDE,
+          path: "company",
+          value: ["acme"],
+        },
+      ],
+    },
+  });
+
+  const flags = await engine.evaluate("foo", {
+    company: "acme",
+    user: "tony",
+  });
+
+  t.like(flags, { foo: false });
+});
+
+test("should return false if a gate is not found", async (t) => {
   const engine = new Flare({});
 
   const flags = await engine.evaluate("bar", {
@@ -62,7 +93,7 @@ test("should default to false if a gate is not found", async (t) => {
   t.like(flags, { bar: false });
 });
 
-test("should default to false", (t) => {
+test("should return false if the condition.kind is unknown", (t) => {
   t.false(
     Flare.evaluateCondition(
       {
@@ -77,7 +108,7 @@ test("should default to false", (t) => {
   );
 });
 
-test("should return false if an input path doesn't exist", (t) => {
+test("should return false if the condition.path doesn't exist", (t) => {
   t.false(
     Flare.evaluateCondition(
       {
