@@ -9,7 +9,7 @@ export const conditionSchema = Joi.object()
       .pattern(/^[a-z0-9]+(\.[a-z0-9]+)*$/i) // file path with "."
       .required(),
     value: Joi.array()
-      .items(Joi.alternatives().try(Joi.string(), Joi.number()))
+      .items(Joi.alternatives().try(Joi.string(), Joi.number(), Joi.boolean()))
       .required()
       .min(1),
   })

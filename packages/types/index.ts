@@ -15,7 +15,7 @@ export type Condition<ValueT> = {
   value: ValueT;
 };
 
-export type ContextValue = string | number;
+export type ContextValue = string | number | boolean;
 
 export type Context = {
   [key: string]: ContextValue | Context;

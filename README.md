@@ -50,6 +50,7 @@ flare.evaluateAll(context)
 ### Recipes
 
 1. [Basic example with data validation](recipes/basic-with-validation.md)
-2. [Parsing YAML files](recipes/parse-yaml.md)
-3. [Glob patterns](recipes/glob-patterns.md)
-4. [Parsing YAML files from a git repo with validation](recipes/git-parse-yaml-with-validation.md)
+2. [Adjusting YAML gates](recipes/yaml-gates.md)
+3. [Parsing YAML files](recipes/parse-yaml.md)
+4. [Glob patterns](recipes/glob-patterns.md)
+5. [Parsing YAML files from a git repo with validation](recipes/git-parse-yaml-with-validation.md)
