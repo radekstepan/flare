@@ -33,6 +33,7 @@
   },
   "name": "@radekstepan/flare-playground",
   "version": "1.0.0",
+  "private": true,
   "type": "module",
   "author": "Radek Stepan <dev@radekstepan.com>",
   "license": "MIT",
