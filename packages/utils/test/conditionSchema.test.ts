@@ -47,7 +47,7 @@ test('should throw an error for invalid "id"', async (t) => {
   t.is(res.status, "rejected");
   t.is(
     (res as PromiseRejectedResult).reason.message,
-    '"id" must only contain alpha-numeric characters'
+    '"id" with value "foo bar" fails to match the required pattern: /^[$a-z_][0-9a-z_$]*$/i'
   );
 });
 
@@ -202,7 +202,7 @@ test('should throw an error for invalid "value"', async (t) => {
   t.is(res.status, "rejected");
   t.is(
     (res as PromiseRejectedResult).reason.message,
-    '"value[0]" must be one of [string, number]'
+    '"value[0]" must be one of [string, number, boolean]'
   );
 });
 
