@@ -1,101 +1,113 @@
-import http from "node:http";
 import process from "node:process";
 import { spawn } from "node:child_process";
 import meow from "meow";
-import PQueue from "p-queue";
+import autocannon from "autocannon";
+import scaffold from "./scaffolds/index.js";
 
 const cli = meow({
   importMeta: import.meta,
   flags: {
-    // Total number of requests to send to the server.
+    // Total number of requests to send to the server; if not set defaults to 10s worth.
     requests: {
       shortFlag: "r",
       type: "number",
-      default: 1000,
     },
     // The server to send the requests to.
     server: {
       shortFlag: "s",
       type: "string",
       default: "ping",
-      choices: ["ping", "evaluateAll"],
+      choices: ["ping", "quickEval", "fullEval"],
     },
     // How many requests should fire at the same time.
-    concurrency: {
+    connections: {
       shortFlag: "c",
       type: "number",
-      default: 40,
+      default: 10,
+    },
+    // Number of Flare gates to generate.
+    gates: {
+      shortFlag: "g",
+      type: "number",
+      default: 10,
+    },
+    // Number of Flare conditions that each gate should have.
+    conditions: {
+      shortFlag: "o",
+      type: "number",
+      default: 10,
+    },
+    // Number of Flare values that each condition should have.
+    values: {
+      shortFlag: "v",
+      type: "number",
+      default: 10,
     },
   },
 });
 
-// The server is a subprocess to isolate time/memory usage of the scaffold.
-const serverProcess = spawn("node", [`servers/${cli.flags.server}.js`], {
-  stdio: ["ipc"],
-});
+let instance;
 
-// Start when the server is ready.
-serverProcess.on("message", (message) => {
-  if (typeof message !== "object") {
-    return;
-  }
+const run = async () => {
+  // Scaffold any fixtures.
+  const args = await scaffold[cli.flags.server](cli.flags);
 
-  // When we get the port from the subprocess.
-  if (message?.port) {
-    const url = `http://localhost:${message.port}`;
+  // Run the server as a subprocess.
+  const serverProcess = spawn("node", args, {
+    stdio: ["ipc"],
+  });
 
-    let { requests } = cli.flags;
-
-    const q = new PQueue({ concurrency: cli.flags.concurrency });
-
-    q.on("error", (err) => {
-      console.error("Request error:", err);
-      serverProcess.kill();
-      process.exit(1);
-    });
-
-    // Stop the bench when all requests have finished and ask for perf stats.
-    q.on("idle", () => {
-      serverProcess.send("bench:stop");
-    });
-
-    // Start the bench and queue the requests.
-    serverProcess.send("bench:start");
-    for (; requests; requests--) {
-      q.add(
-        () =>
-          new Promise((resolve, reject) => {
-            const req = http.get(url, resolve);
-            req.on("error", reject);
-          })
-      );
+  // Start when the server is ready.
+  serverProcess.on("message", (message) => {
+    if (typeof message !== "object") {
+      return;
     }
 
-    return;
-  }
+    // When we get the port from the subprocess.
+    if (message?.port) {
+      serverProcess.send("bench:start");
 
-  // Display the perf stats and close shop.
-  if (message.stats) {
-    console.log(
-      `${(cli.flags.requests * 1000) / message.stats.duration} ops/s`
-    );
-    console.log(`Execution Time: ${message.stats.duration} ms`);
-    // The Resident Set Size, is the amount of space occupied in the main memory device (that is a subset of the total allocated memory) for the process, including all C++ and JavaScript objects and code.
-    console.log(`Memory Usage: ${message.stats.memory / 1024 / 1024} MB`);
+      // Run the bench tracking the process and displaying the result.
+      instance = autocannon(
+        {
+          url: `http://localhost:${message.port}`,
+          connections: cli.flags.connections,
+          amount: cli.flags.requests,
+        },
+        (err) => {
+          serverProcess.kill();
 
+          if (err) {
+            console.error("Request error:", err);
+            process.exit(1);
+          }
+
+          process.exit(0);
+        }
+      );
+
+      autocannon.track(instance, { renderProgressBar: true });
+
+      return;
+    }
+
+    console.error("Server process did not provide a port number");
     serverProcess.kill();
-    process.exit(0);
-  }
+    process.exit(1);
+  });
 
-  console.error("Server process did not provide a port number");
-  serverProcess.kill();
-  process.exit(1);
+  serverProcess.on("error", (data) => {
+    console.error("Failed to start server process:", data.toString());
+    process.exit(1);
+  });
+
+  serverProcess.stdout.pipe(process.stdout);
+  serverProcess.stderr.pipe(process.stderr);
+};
+
+// this is used to kill the instance on CTRL-C
+process.once("SIGINT", () => {
+  instance?.stop();
 });
 
-serverProcess.on("error", (data) => {
-  console.error("Failed to start server process:", data.toString());
-  process.exit(1);
-});
-
-serverProcess.stdout.pipe(process.stdout);
-serverProcess.stderr.pipe(process.stderr);
+run();

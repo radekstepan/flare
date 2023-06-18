@@ -1,11 +1,13 @@
 {
-  "devDependencies": {
+  "dependencies": {
+    "@faker-js/faker": "^8.0.2",
     "@radekstepan/flare": "^1.0.0",
     "@radekstepan/flare-utils": "^1.0.0",
+    "autocannon": "^7.11.0",
     "lint-staged": "^13.2.2",
     "meow": "^12.0.1",
-    "p-queue": "^7.3.4",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "tmp-promise": "^3.0.3"
   },
   "scripts": {
     "start": "node benchmark.js"
