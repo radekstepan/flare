@@ -106,6 +106,21 @@ test('should throw an error for one invalid "conditions"', async (t) => {
   );
 });
 
+test('should throw an error when "conditions[].id" is not unique', async (t) => {
+  const [res] = await Promise.allSettled([
+    gateSchema.validateAsync({
+      eval: "true",
+      conditions: [validCondition, validCondition],
+    }),
+  ]);
+
+  t.is(res.status, "rejected");
+  t.is(
+    (res as PromiseRejectedResult).reason.message,
+    '"conditions" failed custom validation because each condition must have a unique "id"'
+  );
+});
+
 test("should validate a valid gate schema", async (t) => {
   const [res] = await Promise.allSettled([
     gateSchema.validateAsync({

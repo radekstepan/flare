@@ -1,4 +1,5 @@
 import Joi from "joi";
+import type { Condition } from "@radekstepan/flare-types";
 
 export const JS_VAR = /^[$a-z_][0-9a-z_$]*$/i; // JS variable name (kinda)
 export const PATH = /^[a-z0-9]+(\.[a-z0-9]+)*$/i; // file path with "."
@@ -20,7 +21,18 @@ export const conditionSchema = Joi.object()
 export const gateSchema = Joi.object()
   .keys({
     eval: Joi.string().required(),
-    conditions: Joi.array().items(conditionSchema).required().min(1),
+    conditions: Joi.array()
+      .items(conditionSchema)
+      .required()
+      .min(1)
+      .custom((value, helpers) => {
+        const ids = value.map((item: Condition<any>) => item.id);
+        const uniqueIds = new Set(ids);
+        if (ids.length !== uniqueIds.size) {
+          throw new Error('each condition must have a unique "id"');
+        }
+        return value;
+      }, "unique condition id"),
   })
   .required();
 
