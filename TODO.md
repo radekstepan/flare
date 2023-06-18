@@ -1,5 +1,6 @@
 validator:
 - make sure condition ids are unique
+- make sure condition ids do not start with a number
 
 extras:
 - run benchmarks for comparison (memory, CPU, speed)
