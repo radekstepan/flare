@@ -18,7 +18,7 @@ We'll begin with a simple example of activating a feature in an integration sett
 
 In the given `Context` below, "feature/new" will evaluate to true.
 
-```json
+```js
 {
   "env": "inte", // or "us", "eu" etc.
   "stage": "release", // or "hotfix"

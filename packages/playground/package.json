@@ -27,8 +27,6 @@
   },
   "scripts": {
     "start": "vite dev",
-    "test": "vitest --run",
-    "test:dev": "vitest dev",
     "build": "vite build"
   },
   "name": "@radekstepan/flare-playground",
