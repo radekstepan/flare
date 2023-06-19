@@ -25,7 +25,7 @@ export const gateSchema = Joi.object()
       .items(conditionSchema)
       .required()
       .min(1)
-      .custom((value, helpers) => {
+      .custom((value) => {
         const ids = value.map((item: Condition<any>) => item.id);
         const uniqueIds = new Set(ids);
         if (ids.length !== uniqueIds.size) {
