@@ -4,8 +4,8 @@
     "jexl": "^2.3.0"
   },
   "devDependencies": {
-    "@radekstepan/flare-types": "^1.0.0",
-    "@radekstepan/flare-utils": "^1.0.0",
+    "@radekstepan/flare-types": "^1.1.0",
+    "@radekstepan/flare-utils": "^1.1.0",
     "@types/jexl": "^2.3.1",
     "@types/js-yaml": "^4.0.5",
     "@types/node": "^20.2.5",
@@ -25,7 +25,7 @@
     "build": "del-cli dist && tsc"
   },
   "name": "@radekstepan/flare",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "./dist/index.js",
   "exports": {
     "types": "./dist/index.d.ts",

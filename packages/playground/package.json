@@ -1,8 +1,8 @@
 {
   "devDependencies": {
-    "@radekstepan/flare": "^1.0.0",
-    "@radekstepan/flare-types": "^1.0.0",
-    "@radekstepan/flare-utils": "^1.0.0",
+    "@radekstepan/flare": "^1.1.0",
+    "@radekstepan/flare-types": "^1.1.0",
+    "@radekstepan/flare-utils": "^1.1.0",
     "@types/node": "^18.16.0",
     "@types/prismjs": "^1.26.0",
     "@types/react": "^18.2.0",
@@ -30,7 +30,7 @@
     "build": "vite build"
   },
   "name": "@radekstepan/flare-playground",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "author": "Radek Stepan <dev@radekstepan.com>",
