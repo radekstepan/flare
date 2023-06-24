@@ -21,11 +21,9 @@ export type Context = {
   [key: string]: ContextValue | Context;
 };
 
-export type EvalContext = Record<string, boolean>;
+export type EvalContext = (id: string) => boolean;
 
-export type EvalReturn = Promise<boolean | undefined>;
-
-export type Eval = (context: EvalContext) => EvalReturn;
+export type Eval = (evalContext: EvalContext) => boolean;
 
 export interface Gate {
   eval: string;
@@ -36,7 +34,7 @@ export type Gates = Record<string, Gate>;
 
 export interface CompiledGate {
   eval: Eval;
-  conditions: Condition<Set<ContextValue>>[];
+  conditions: Map<string, Condition<Set<ContextValue>>>;
 }
 
 export type Flags = Record<string, boolean>;

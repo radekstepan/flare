@@ -19,7 +19,7 @@ function Output() {
       return { n };
     }
     const flare = new Flare(gates);
-    const res = await flare.evaluateAll(JSON.parse(context) as Context);
+    const res = await flare.evaluateAll(JSON.parse(context) as Context, true);
     return { n, evaluated: JSON.stringify(res, null, 2) };
   }, [yamlGates, context]);
 

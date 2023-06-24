@@ -1,7 +1,5 @@
 import * as dot from "dot-prop";
 
-const CONTEXT_VALUE = ["number", "string", "boolean"];
-
 export const getProperty = <T>(object: any, path: string): T | null => {
   if (typeof path !== "string") {
     return null;

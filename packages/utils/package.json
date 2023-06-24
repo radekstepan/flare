@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@radekstepan/flare": "^1.1.0",
     "glob": "^10.2.6",
     "joi": "^17.9.2",
     "js-yaml": "^4.1.0",
@@ -7,7 +8,6 @@
   },
   "devDependencies": {
     "@radekstepan/flare-types": "^1.1.0",
-    "@types/jexl": "^2.3.1",
     "@types/js-yaml": "^4.0.5",
     "@types/mock-fs": "^4.13.1",
     "@types/node": "^20.2.5",
@@ -60,6 +60,9 @@
     ]
   },
   "c8": {
+    "include": [
+      "src"
+    ],
     "reporter": [
       "html",
       "text"

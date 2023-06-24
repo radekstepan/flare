@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { compile } from "@radekstepan/flare";
 import type { Condition } from "@radekstepan/flare-types";
 
 export const JS_VAR = /^[$a-z_][0-9a-z_$]*$/i; // JS variable name (kinda)
@@ -20,7 +21,12 @@ export const conditionSchema = Joi.object()
 
 export const gateSchema = Joi.object()
   .keys({
-    eval: Joi.string().required(),
+    eval: Joi.string()
+      .required()
+      .custom((value) => {
+        compile(value);
+        return value;
+      }, "valid compiled eval expression"),
     conditions: Joi.array()
       .items(conditionSchema)
       .required()

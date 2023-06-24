@@ -27,8 +27,8 @@ Use this server to measure the baseline performance of an http server that retur
 
 #### `server="quickEval"`
 
-A server that evaluates all Flare gates on each request. Each gate "eval" expression is set to "true" and is not compiled and evaluated using [jexl](https://github.com/TomFrost/Jexl). All conditions are still executed.
+A server that evaluates all Flare gates on each request. Each gate "eval" expression is set to "true" meaning that conditions need not be evaluated.
 
 #### `server="fullEval"`
 
-A server that evaluates all Flare gates on each request. Each gate "eval" expression uses all conditions and is compiled and evaluated using [jexl](https://github.com/TomFrost/Jexl).
+A server that evaluates all Flare gates on each request. Each gate "eval" expression uses all conditions.

@@ -51,10 +51,51 @@ test("should evaluate a single gate", async (t) => {
   t.like(flags, { foo: true });
 });
 
-test("should return false if the expression result isn't boolean", async (t) => {
+// TODO only in strict mode
+test("should throw an error if the eval expression cannot be compiled", async (t) => {
   const engine = new Flare({
     foo: {
       eval: "0 + 1",
+      conditions: [],
+    },
+  });
+
+  const evalPromise = engine.evaluate("foo", {});
+
+  const [evalResult] = await Promise.allSettled([evalPromise]);
+
+  const rejection = {
+    status: "rejected",
+    reason: new Error('Expression type "BinaryExpression" is invalid'),
+  };
+
+  t.like(evalResult, rejection);
+});
+
+test("should throw an error if an eval expression has a condition missing (strict)", async (t) => {
+  const engine = new Flare({
+    foo: {
+      eval: "bar",
+      conditions: [],
+    },
+  });
+
+  const evalPromise = engine.evaluate("foo", {}, true);
+
+  const [evalResult] = await Promise.allSettled([evalPromise]);
+
+  const rejection = {
+    status: "rejected",
+    reason: '"foo" condition "bar" not found',
+  };
+
+  t.like(evalResult, rejection);
+});
+
+test("should throw a generic error on an unexpected eval error (strict)", async (t) => {
+  const engine = new Flare({
+    foo: {
+      eval: "user",
       conditions: [
         {
           kind: Kind.CONTEXT,
@@ -63,21 +104,98 @@ test("should return false if the expression result isn't boolean", async (t) => 
           path: "user",
           value: ["tony"],
         },
+      ],
+    },
+  });
+
+  engine.evaluateCondition = () => {
+    throw "💣";
+  };
+  const evalPromise = engine.evaluate("foo", {}, true);
+
+  const [evalResult] = await Promise.allSettled([evalPromise]);
+
+  const rejection = {
+    status: "rejected",
+    reason: "Something went wrong",
+  };
+
+  t.like(evalResult, rejection);
+});
+
+test("should throw an error on missing context value (strict)", async (t) => {
+  const engine = new Flare({
+    foo: {
+      eval: "isUser",
+      conditions: [
         {
           kind: Kind.CONTEXT,
-          id: "company",
+          id: "isUser",
           operation: Operation.INCLUDE,
-          path: "company",
-          value: ["acme"],
+          path: "user",
+          value: ["tony"],
         },
       ],
     },
   });
 
-  const flags = await engine.evaluate("foo", {
-    company: "acme",
-    user: "tony",
+  const evalPromise = engine.evaluate("foo", {}, true);
+
+  const [evalResult] = await Promise.allSettled([evalPromise]);
+
+  const rejection = {
+    status: "rejected",
+    reason: '"foo" condition "isUser" missing context value "user"',
+  };
+
+  t.like(evalResult, rejection);
+});
+
+test("should throw an error on invalid context kind (strict)", async (t) => {
+  const engine = new Flare({
+    foo: {
+      eval: "isUser",
+      conditions: [
+        {
+          kind: 5 as any,
+          id: "isUser",
+          operation: Operation.INCLUDE,
+          path: "user",
+          value: ["tony"],
+        },
+      ],
+    },
   });
+
+  const evalPromise = engine.evaluate("foo", {}, true);
+
+  const [evalResult] = await Promise.allSettled([evalPromise]);
+
+  const rejection = {
+    status: "rejected",
+    reason: '"foo" condition "isUser" kind "5" is not known',
+  };
+
+  t.like(evalResult, rejection);
+});
+
+test("should default to false on invalid context kind", async (t) => {
+  const engine = new Flare({
+    foo: {
+      eval: "isUser",
+      conditions: [
+        {
+          kind: 5 as any,
+          id: "isUser",
+          operation: Operation.INCLUDE,
+          path: "user",
+          value: ["tony"],
+        },
+      ],
+    },
+  });
+
+  const flags = await engine.evaluate("foo", {});
 
   t.like(flags, { foo: false });
 });
@@ -93,32 +211,10 @@ test("should return false if a gate is not found", async (t) => {
   t.like(flags, { bar: false });
 });
 
-test("should return false if the condition.kind is unknown", (t) => {
-  t.false(
-    Flare.evaluateCondition(
-      {
-        kind: "unknown" as any,
-        id: "",
-        operation: Operation.INCLUDE,
-        path: "",
-        value: new Set(),
-      },
-      {}
-    )
-  );
+test("should return true on an exclude condition operation with a null value", async (t) => {
+  t.true(Flare.conditionOperations.exclude(new Set(), null));
 });
 
-test("should return false if the condition.path doesn't exist", (t) => {
-  t.false(
-    Flare.evaluateCondition(
-      {
-        kind: Kind.CONTEXT,
-        id: "",
-        operation: Operation.INCLUDE,
-        path: "foo",
-        value: new Set("tommy"),
-      },
-      { user: "tommy" }
-    )
-  );
+test("should return true on an include condition operation with a null value", async (t) => {
+  t.false(Flare.conditionOperations.include(new Set(), null));
 });

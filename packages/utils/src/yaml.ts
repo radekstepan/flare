@@ -1,4 +1,4 @@
-import { readFile } from "fs/promises";
+import { readFile } from "node:fs/promises";
 import { glob, type GlobOptions } from "glob";
 import type { PathBase } from "path-scurry";
 import { load } from "js-yaml";

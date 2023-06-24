@@ -12,7 +12,6 @@ export default async function scaffold(flags) {
     (acc, i) => ({
       ...acc,
       [i + faker.lorem.slug()]: {
-        // This skips compiling the expression using jexl.
         eval: "true",
         conditions: multiple(flags.conditions).map((i) => ({
           id: "id" + i + faker.lorem.word(),

@@ -4,7 +4,6 @@ import {
   type CompiledGate,
   type Condition,
   type Gates,
-  type EvalContext,
   type Flags,
   type Context,
   type ContextValue,
@@ -23,11 +22,18 @@ class Flare {
       for (let name in data) {
         const gate = data[name];
 
+        const conditions = new Map(
+          gate.conditions.map((condition) => [
+            condition.id,
+            {
+              ...condition,
+              value: new Set(condition.value),
+            },
+          ])
+        );
+
         this.gates.set(name, {
-          conditions: gate.conditions.map((condition) => ({
-            ...condition,
-            value: new Set(condition.value),
-          })),
+          conditions,
           eval: compile(gate.eval),
         });
       }
@@ -45,48 +51,74 @@ class Flare {
   };
 
   // Known gate conditions.
-  static evaluateCondition(
+  evaluateCondition(
     condition: Condition<Set<ContextValue>>,
-    context: Context
+    context: Context,
+    strict = false
   ): boolean {
-    if (condition.kind === Kind.CONTEXT) {
-      const value = getProperty<ContextValue>(context, condition.path);
-      return Flare.conditionOperations[condition.operation](
-        condition.value,
-        value
-      );
-    }
+    try {
+      if (condition.kind === Kind.CONTEXT) {
+        const value = getProperty<ContextValue>(context, condition.path);
+        if (strict && value === null) {
+          throw new Error(
+            `condition "${condition.id}" missing context value "${condition.path}"`
+          );
+        }
+        return Flare.conditionOperations[condition.operation](
+          condition.value,
+          value
+        );
+      }
 
-    return false;
+      throw new Error(
+        `condition "${condition.id}" kind "${condition.kind}" is not known`
+      );
+    } catch (err) {
+      if (strict) {
+        throw err;
+      }
+      return false;
+    }
   }
 
   // Eval a gate given an input context.
-  async evaluate(name: string, context: Context) {
+  async evaluate(name: string, context: Context, strict = false) {
     return this.jobRunner(async () => {
+      let bool = false;
       const gate = this.gates.get(name);
-      if (!gate) {
-        return Promise.resolve({ [name]: false });
+      if (gate) {
+        // Eval the compiled gate, fetching condition results as necessary.
+        try {
+          bool = gate.eval((id: string) => {
+            const condition = gate.conditions.get(id);
+            if (!condition) {
+              throw new Error(`condition "${id}" not found`);
+            }
+            return this.evaluateCondition(condition, context, strict);
+          });
+        } catch (err) {
+          if (strict) {
+            return Promise.reject(
+              err instanceof Error
+                ? `"${name}" ${err.message}`
+                : "Something went wrong"
+            );
+          }
+        }
       }
 
-      const evalContext: EvalContext = {};
-      for (let condition of gate.conditions) {
-        evalContext[condition.id] = Flare.evaluateCondition(condition, context);
-      }
-
-      const bool = await gate.eval(evalContext);
       return {
-        // Default expression result to false.
-        [name]: typeof bool !== "boolean" ? false : bool,
+        [name]: bool,
       };
     });
   }
 
   // Eval the gates given an input context.
-  async evaluateAll(context: Context) {
+  async evaluateAll(context: Context, strict = false) {
     return this.jobRunner(async () => {
       const res: Flags[] = await Promise.all(
         Array.from(this.gates.keys()).map((name) =>
-          this.evaluate(name, context)
+          this.evaluate(name, context, strict)
         )
       );
 

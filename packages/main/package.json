@@ -1,12 +1,12 @@
 {
   "dependencies": {
     "dot-prop": "sindresorhus/dot-prop",
-    "jexl": "^2.3.0"
+    "esprima": "^4.0.1"
   },
   "devDependencies": {
     "@radekstepan/flare-types": "^1.1.0",
-    "@radekstepan/flare-utils": "^1.1.0",
-    "@types/jexl": "^2.3.1",
+    "@types/esprima": "^4.0.3",
+    "@types/estree": "^1.0.1",
     "@types/js-yaml": "^4.0.5",
     "@types/node": "^20.2.5",
     "@types/sinon": "^10.0.15",
@@ -53,6 +53,9 @@
     ]
   },
   "c8": {
+    "include": [
+      "src"
+    ],
     "reporter": [
       "html",
       "text"

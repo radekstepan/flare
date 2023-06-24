@@ -63,10 +63,10 @@ The benchmark results displayed below indicate the performance metrics for varyi
 
 | Gates _n_            | 0       | 1       | 10      | 20      | 50      |
 |----------------------|---------|---------|---------|---------|---------|
-| Avg Requests/sec     | 63,489  | 14,574  | 6,450   | 4,157   | 1,845   |
-| Avg Latency (ms)     | 0.01    | 0.11    | 1.14    | 2.10    | 4.90    |
-| Std Dev Latency (ms) | 0.08    | 0.34    | 0.43    | 0.81    | 1.61    |
-| Boot Time (ms)       | 2       | 6       | 34      | 62      | 144     |
+| Avg Requests/sec     | 64,236  | 19,800  | 8,306   | 5,877   | 2,710   |
+| Avg Latency (ms)     | 0.01    | 0.03    | 1.10    | 1.16    | 3.35    |
+| Std Dev Latency (ms) | 0.07    | 0.19    | 0.37    | 0.49    | 1.00    |
+| Boot Time (ms)       | 1       | 7       | 34      | 61      | 141     |
 
 Please note that the "Boot Time" value denotes the time it takes to launch an HTTP server, load all `Gates` from a JSON file, compile all the expressions, and convert the list of values for each gate condition into sets.
 

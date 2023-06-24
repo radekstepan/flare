@@ -17,7 +17,6 @@ export default async function scaffold(flags) {
         );
 
         return {
-          // Gets compiled and evaluated using jexl.
           eval: conditions.join(" || "),
           conditions: conditions.map((id) => ({
             id: id,
