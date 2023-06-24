@@ -13,31 +13,38 @@ import jobRunner, { type DoJob } from "./jobRunner.js";
 import { getProperty } from "./object.js";
 
 class Flare {
+  // Map to store compiled gates.
   gates = new Map<string, CompiledGate>();
+  // Job runner for async tasks.
   jobRunner: DoJob<Flags>;
 
-  // Compile the expressions and save gates.
+  // The constructor compiles the gates.
   constructor(dataOrPromise: Gates | Promise<Gates>) {
     const promise = Promise.resolve(dataOrPromise).then((data) => {
+      // Compile each gate and store it in the `gates` Map.
       for (let name in data) {
         const gate = data[name];
 
+        // Convert the conditions of each gate into a Map for easy access.
         const conditions = new Map(
           gate.conditions.map((condition) => [
             condition.id,
             {
               ...condition,
+              // A list of values turned into a Set (faster eval, slower boot).
               value: new Set(condition.value),
             },
           ])
         );
 
+        // Compile the gate's expression and save it in the `gates` Map.
         this.gates.set(name, {
           conditions,
           eval: compile(gate.eval),
         });
       }
     });
+    // Initialize the job runner with the promise that resolves with the compiled gates.
     this.jobRunner = jobRunner(promise);
   }
 
@@ -50,7 +57,7 @@ class Flare {
     include: (set, value) => (value === null ? false : set.has(value)),
   };
 
-  // Known gate conditions.
+  // Evaluate a condition given a context.
   evaluateCondition(
     condition: Condition<Set<ContextValue>>,
     context: Context,
@@ -58,12 +65,14 @@ class Flare {
   ): boolean {
     try {
       if (condition.kind === Kind.CONTEXT) {
+        // Get the value from the context using the condition's path.
         const value = getProperty<ContextValue>(context, condition.path);
         if (strict && value === null) {
           throw new Error(
             `condition "${condition.id}" missing context value "${condition.path}"`
           );
         }
+        // Evaluate the condition using the operation defined for the condition.
         return Flare.conditionOperations[condition.operation](
           condition.value,
           value
@@ -77,6 +86,7 @@ class Flare {
       if (strict) {
         throw err;
       }
+      // Default to false.
       return false;
     }
   }
@@ -89,6 +99,7 @@ class Flare {
       if (gate) {
         // Eval the compiled gate, fetching condition results as necessary.
         try {
+          // The gate's eval function is called with a function that evaluates a condition by its id.
           bool = gate.eval((id: string) => {
             const condition = gate.conditions.get(id);
             if (!condition) {
@@ -113,7 +124,7 @@ class Flare {
     });
   }
 
-  // Eval the gates given an input context.
+  // Eval all gates given an input context.
   async evaluateAll(context: Context, strict = false) {
     return this.jobRunner(async () => {
       const res: Flags[] = await Promise.all(
@@ -122,6 +133,7 @@ class Flare {
         )
       );
 
+      // Merge the results of each gate evaluation into a single object.
       return res.reduce<Flags>(
         (acc, flags) => ({
           ...acc,

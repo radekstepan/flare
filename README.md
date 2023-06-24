@@ -2,14 +2,7 @@
 
 > Feature Flag Loading and Runtime Evaluation
 
-Flare is a dynamic gating library that evaluates conditions based on input contexts. The package allows you to set up gates using various conditions and evaluate these conditions based on a given input. The package provides a promise-based API that is highly flexible and easy to use in any JavaScript or TypeScript project.
-
-## Features
-
-- Support for both synchronous and asynchronous condition evaluation.
-- Supports complex gating structures through "gates", each containing multiple conditions.
-- Provides built-in gate condition operations such as include and exclude.
-- Performs evaluation of all gates or individual gates based on the given input context.
+Flare is a dynamic gating library that evaluates conditions based on input contexts. The package allows you to set up gates using various conditions and evaluate these conditions based on a given input. The package provides a promise-based API for use in any JavaScript or TypeScript project. Both the browser and node environments are supported.
 
 ## Installation
 
@@ -61,12 +54,12 @@ This benchmark was conducted using a script located in the `packages/benchmark` 
 
 The benchmark results displayed below indicate the performance metrics for varying numbers of gates (_n_ gates), with each gate having 10 conditions and each condition having 1,000 values.
 
-| Gates _n_            | 0       | 1       | 10      | 20      | 50      |
-|----------------------|---------|---------|---------|---------|---------|
-| Avg Requests/sec     | 64,236  | 19,800  | 8,306   | 5,877   | 2,710   |
-| Avg Latency (ms)     | 0.01    | 0.03    | 1.10    | 1.16    | 3.35    |
-| Std Dev Latency (ms) | 0.07    | 0.19    | 0.37    | 0.49    | 1.00    |
-| Boot Time (ms)       | 1       | 7       | 34      | 61      | 141     |
+| Gates _n_            | 0       | 1       | 10      | 20      | 50      | 50 (M2 Pro) | 50 (Ryzen 5 7600X) |
+|----------------------|---------|---------|---------|---------|---------|-------------|------------------|
+| Avg Requests/sec     | 64,236  | 19,800  | 8,306   | 5,877   | 2,710   | 5,102       | 7,037            |
+| Avg Latency (ms)     | 0.01    | 0.03    | 1.10    | 1.16    | 3.35    | 1.24        | 1.12             |
+| Std Dev Latency (ms) | 0.07    | 0.19    | 0.37    | 0.49    | 1.00    | 0.67        | 0.36             |
+| Boot Time (ms)       | 1       | 7       | 34      | 61      | 141     | 112         | 77               |
 
 Please note that the "Boot Time" value denotes the time it takes to launch an HTTP server, load all `Gates` from a JSON file, compile all the expressions, and convert the list of values for each gate condition into sets.
 
