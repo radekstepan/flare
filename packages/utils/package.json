@@ -1,13 +1,13 @@
 {
   "dependencies": {
-    "@radekstepan/flare": "^1.2.0",
+    "@radekstepan/flare": "^1.2.1",
     "glob": "^10.2.6",
     "joi": "^17.9.2",
     "js-yaml": "^4.1.0",
     "serialize-error": "^11.0.0"
   },
   "devDependencies": {
-    "@radekstepan/flare-types": "^1.2.0",
+    "@radekstepan/flare-types": "^1.2.1",
     "@types/js-yaml": "^4.0.5",
     "@types/mock-fs": "^4.13.1",
     "@types/node": "^20.2.5",
@@ -31,7 +31,7 @@
     "build": "del-cli dist && yarn run build:node && yarn run build:browser"
   },
   "name": "@radekstepan/flare-utils",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "./dist/node/index.node.js",
   "exports": {
     "types": "./dist/node/index.node.d.ts",
