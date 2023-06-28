@@ -20,6 +20,21 @@ const newContext = (): [Set<string>, EvalContext] => {
   ];
 };
 
+// Test booleans.
+test("Boolean: true", (t) => {
+  const [called, evalContext] = newContext();
+  const evaluate = compile(true);
+  t.true(evaluate(evalContext));
+  t.deepEqual(called, new Set([]));
+});
+
+test("Boolean: false", (t) => {
+  const [called, evalContext] = newContext();
+  const evaluate = compile(false);
+  t.false(evaluate(evalContext));
+  t.deepEqual(called, new Set([]));
+});
+
 // Test literals.
 test("Literal: true", (t) => {
   const [called, evalContext] = newContext();

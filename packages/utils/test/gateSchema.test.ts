@@ -36,14 +36,14 @@ test('should throw an error for missing "eval"', async (t) => {
 test('should throw an error for invalid "eval"', async (t) => {
   const [res] = await Promise.allSettled([
     gateSchema.validateAsync({
-      eval: true,
+      eval: 1,
     }),
   ]);
 
   t.is(res.status, "rejected");
   t.is(
     (res as PromiseRejectedResult).reason.message,
-    '"eval" must be a string'
+    '"eval" must be one of [string, boolean]'
   );
 });
 

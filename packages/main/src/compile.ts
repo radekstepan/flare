@@ -10,7 +10,7 @@ import type {
   UnaryExpression,
   LogicalExpression,
 } from "estree";
-import { Eval, EvalContext } from "@radekstepan/flare-types";
+import type { Eval, EvalContext, Gate } from "@radekstepan/flare-types";
 
 // Type guards to identify different types of nodes in the AST.
 function isExpressionStatement(
@@ -36,8 +36,10 @@ function isLogicalExpression(node: Expression): node is LogicalExpression {
 }
 
 // Compile function takes an expression string and returns an Eval function.
-const compile = (expression: string): Eval => {
-  if (typeof expression !== "string") {
+const compile = (expression: Gate["eval"]): Eval => {
+  if (typeof expression === "boolean") {
+    return () => expression;
+  } else if (typeof expression !== "string") {
     throw new Error("expression is not a string");
   }
 

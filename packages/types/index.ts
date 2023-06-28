@@ -26,7 +26,7 @@ export type EvalContext = (id: string) => boolean;
 export type Eval = (evalContext: EvalContext) => boolean;
 
 export interface Gate {
-  eval: string;
+  eval: string | boolean;
   conditions: Condition<ContextValue[]>[];
 }
 

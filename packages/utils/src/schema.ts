@@ -1,6 +1,6 @@
 import Joi from "joi";
 import { compile } from "@radekstepan/flare";
-import type { Condition } from "@radekstepan/flare-types";
+import type { Gate } from "@radekstepan/flare-types";
 
 export const JS_VAR = /^[$a-z_][0-9a-z_$]*$/i; // JS variable name (kinda)
 export const PATH = /^[a-z0-9]+(\.[a-z0-9]+)*$/i; // object path separating parts with a "."
@@ -23,9 +23,10 @@ export const conditionSchema = Joi.object()
 // Joi schema for validating gate objects.
 export const gateSchema = Joi.object()
   .keys({
-    eval: Joi.string()
+    eval: Joi.alternatives()
+      .try(Joi.string(), Joi.boolean()) // 'value' must be either a string or a boolean
       .required()
-      .custom((value) => {
+      .custom((value: Gate["eval"]) => {
         compile(value);
         return value;
       }, "valid compiled eval expression"), // The 'eval' string must be a valid expression that can be compiled
@@ -33,8 +34,8 @@ export const gateSchema = Joi.object()
       .items(conditionSchema) // 'conditions' must be an array of valid condition objects
       .required()
       .min(1)
-      .custom((value) => {
-        const ids = value.map((item: Condition<any>) => item.id);
+      .custom((value: Gate["conditions"]) => {
+        const ids = value.map((item) => item.id);
         const uniqueIds = new Set(ids);
         // Each condition in the array must have a unique 'id'
         if (ids.length !== uniqueIds.size) {
