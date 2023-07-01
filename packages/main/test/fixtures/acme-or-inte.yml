@@ -1,16 +1,16 @@
-"feature/foo":
-  # acme and all of inte
-  eval: "IncludeLocation || IncludeCompany"
-  conditions:
-    - id: IncludeLocation
-      operation: include
-      kind: context
-      path: location
-      value:
-        - "inte"
-    - id: IncludeCompany
-      operation: include
-      kind: context
-      path: company
-      value:
-        - "acme"
+- "feature/foo":
+    # acme and all of inte
+    eval: "IncludeLocation || IncludeCompany"
+    conditions:
+      - id: IncludeLocation
+        operation: include
+        kind: context
+        path: location
+        value:
+          - "inte"
+      - id: IncludeCompany
+        operation: include
+        kind: context
+        path: company
+        value:
+          - "acme"

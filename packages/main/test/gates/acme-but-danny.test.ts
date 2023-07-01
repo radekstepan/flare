@@ -1,16 +1,16 @@
 import { readFile } from "node:fs/promises";
 import test from "ava";
 import { load } from "js-yaml";
-import type { Gates } from "@radekstepan/flare-types";
+import type { Data } from "@radekstepan/flare-types";
 import Flare from "../../src/Flare.js";
 
 let engine: Flare;
 test.before("setup", () => {
-  const gates = Promise.resolve().then(async () => {
+  const data = Promise.resolve().then(async () => {
     const yaml = await readFile("test/fixtures/acme-but-danny.yml");
-    return load(yaml.toString()) as Gates;
+    return load(yaml.toString()) as Data;
   });
-  engine = new Flare(gates);
+  engine = new Flare(data);
 });
 
 test("should exclude danny from acme", async (t) => {

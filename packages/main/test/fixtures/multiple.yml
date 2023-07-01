@@ -1,5 +1,4 @@
-- "feature/foo":
-    # allow everyone in us2
+- "feature/foo": &gate
     eval: "IncludeLocation"
     conditions:
       - id: IncludeLocation
@@ -8,3 +7,7 @@
         path: location
         value:
           - us2
+
+  "feature/bar": *gate
+
+- "feature/baz": *gate

@@ -1,10 +1,11 @@
 import test from "ava";
 import { gateSchema } from "../src/schema.js";
+import { Operation, Kind, type Condition } from "@radekstepan/flare-types";
 
-const validCondition = {
+const validCondition: Condition<string[]> = {
   id: "foo",
-  operation: "exclude",
-  kind: "context",
+  operation: Operation.EXCLUDE,
+  kind: Kind.CONTEXT,
   path: "valid.path",
   value: ["a"],
 };
@@ -117,7 +118,7 @@ test('should throw an error when "conditions[].id" is not unique', async (t) => 
   t.is(res.status, "rejected");
   t.is(
     (res as PromiseRejectedResult).reason.message,
-    '"value" failed custom validation because each condition must have a unique "id"'
+    '"value" failed custom validation because condition id "foo" is not unique'
   );
 });
 

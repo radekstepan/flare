@@ -1,10 +1,10 @@
-"feature/off":
-  # allow nobody
-  eval: "false"
-  conditions:
-    - id: IncludeLocation
-      operation: include
-      kind: context
-      path: location
-      value:
-        - us2
+- "feature/off":
+    # allow nobody
+    eval: "false"
+    conditions:
+      - id: IncludeLocation
+        operation: include
+        kind: context
+        path: location
+        value:
+          - us2

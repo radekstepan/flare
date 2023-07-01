@@ -1,6 +1,6 @@
 import Joi from "joi";
 import { compile } from "@radekstepan/flare";
-import type { Gate } from "@radekstepan/flare-types";
+import type { Data, Gate } from "@radekstepan/flare-types";
 
 export const JS_VAR = /^[$a-z_][0-9a-z_$]*$/i; // JS variable name (kinda)
 export const PATH = /^[a-z0-9]+(\.[a-z0-9]+)*$/i; // object path separating parts with a "."
@@ -32,30 +32,50 @@ export const gateSchema = Joi.object()
       .min(1),
   })
   .required()
-  .custom((value: Gate) => {
+  .custom((gate: Gate) => {
     // Extract the set of known conditions and make sure they are unique.
     let knownConditions = new Set<string>();
-    if ("conditions" in value && Array.isArray(value.conditions)) {
-      const ids = value.conditions.map((item) => item.id);
-      knownConditions = new Set(ids);
-      if (ids.length !== knownConditions.size) {
-        throw new Error('each condition must have a unique "id"');
+    if ("conditions" in gate && Array.isArray(gate.conditions)) {
+      for (const condition of gate.conditions) {
+        if (condition && typeof condition === "object" && "id" in condition) {
+          if (knownConditions.has(condition.id)) {
+            throw new Error(`condition id "${condition.id}" is not unique`);
+          }
+          knownConditions.add(condition.id);
+        }
       }
     }
     // Make sure eval compiles and all conditions are defined.
-    if ("eval" in value) {
-      const [, evalConditions] = compile(value.eval);
+    if ("eval" in gate) {
+      const [, evalConditions] = compile(gate.eval);
       for (const cond of evalConditions) {
         if (!knownConditions.has(cond)) {
           throw new Error(`condition "${cond}" is missing`);
         }
       }
     }
-    return value;
+    return gate;
   }, "valid compile eval expression and conditions");
 
-// Joi schema for validating a map of gate objects.
-export const gatesSchema = Joi.object()
-  .pattern(SLUG, gateSchema) // Each key must be a valid slug, and the value must be a valid gate object
-  .required()
-  .min(1);
+// Joi schema for validating an array of map of gate objects.
+export const gatesSchema = Joi.array()
+  .items(
+    Joi.object()
+      .pattern(SLUG, gateSchema) // Each key must be a valid slug, and the value must be a valid gate object
+      .required()
+      .min(1)
+  )
+  .custom((data: Data) => {
+    const names = new Set<string>();
+    for (const gates of data) {
+      if (gates && typeof gates === "object") {
+        for (const name in gates) {
+          if (names.has(name)) {
+            throw new Error(`gate name "${name}" is not unique`);
+          }
+          names.add(name);
+        }
+      }
+    }
+    return data;
+  }, "unique gate names");

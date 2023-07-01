@@ -8,28 +8,30 @@ const multiple = (n) => new Array(n).fill(true).map((_, i) => i);
 export default async function scaffold(flags) {
   const { path } = await file();
 
-  const gates = multiple(flags.gates).reduce(
-    (acc, i) => ({
-      ...acc,
-      [i + faker.lorem.slug()]: (() => {
-        const conditions = multiple(flags.conditions).map(
-          (i) => "id" + i + faker.lorem.word()
-        );
+  const gates = [
+    multiple(flags.gates).reduce(
+      (acc, i) => ({
+        ...acc,
+        [i + faker.lorem.slug()]: (() => {
+          const conditions = multiple(flags.conditions).map(
+            (i) => "id" + i + faker.lorem.word()
+          );
 
-        return {
-          eval: conditions.join(" || "),
-          conditions: conditions.map((id) => ({
-            id: id,
-            kind: "context",
-            operation: "include",
-            path: faker.lorem.word(),
-            value: multiple(flags.values).map(faker.string.uuid),
-          })),
-        };
-      })(),
-    }),
-    {}
-  );
+          return {
+            eval: conditions.join(" || "),
+            conditions: conditions.map((id) => ({
+              id: id,
+              kind: "context",
+              operation: "include",
+              path: faker.lorem.word(),
+              value: multiple(flags.values).map(faker.string.uuid),
+            })),
+          };
+        })(),
+      }),
+      {}
+    ),
+  ];
 
   await validate.validateGates(gates);
 

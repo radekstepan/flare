@@ -5,15 +5,15 @@ This recipe demonstrate how to adjust YAML gates for feature deployment.
 We'll begin with a simple example of activating a feature in an integration setting.
 
 ```yaml
-"feature/new":
-  eval: "IsEnv"
-  conditions:
-    - id: IsEnv
-      operation: include
-      kind: context
-      path: env
-      value:
-        - inte
+- "feature/new":
+    eval: "IsEnv"
+    conditions:
+      - id: IsEnv
+        operation: include
+        kind: context
+        path: env
+        value:
+          - inte
 ```
 
 In the given `Context` below, "feature/new" will evaluate to true.
@@ -33,23 +33,23 @@ In the given `Context` below, "feature/new" will evaluate to true.
 We can also extend this support to a staging environment:
 
 ```diff
-  "feature/new":
--   eval: "IsEnv"
-+   eval: "IsEnv || IsStage"
-    conditions:
-      - id: IsEnv
-        operation: include
-        kind: context
-        path: env
-        value:
-          - inte
-+     - id: IsStage
-+       operation: include
-+       kind: context
-+       path: stage
-+       value:
-+         - release
-+         - hotfix
+  - "feature/new":
+-     eval: "IsEnv"
++     eval: "IsEnv || IsStage"
+      conditions:
+        - id: IsEnv
+          operation: include
+          kind: context
+          path: env
+          value:
+            - inte
++       - id: IsStage
++         operation: include
++         kind: context
++         path: stage
++         value:
++           - release
++           - hotfix
 ```
 
 ## Users
@@ -59,23 +59,23 @@ YAML gates can be modified to enable features for specified users.
 Consider the following example on how to implement this functionality:
 
 ```diff
-  "feature/new":
--   eval: "IsEnv || IsStage"
-+   eval: "IsEnv || IsStage || IsUser"
-    conditions:
-      - id: IsEnv
-        operation: include
-        kind: context
-        path: env
-        value:
-          - inte
-+     - id: IsUser
-+       operation: include
-+       kind: context
-+       path: user
-+       value:
-+         - danny
-+         - alex
+  - "feature/new":
+-     eval: "IsEnv || IsStage"
++     eval: "IsEnv || IsStage || IsUser"
+      conditions:
+        - id: IsEnv
+          operation: include
+          kind: context
+          path: env
+          value:
+            - inte
++       - id: IsUser
++         operation: include
++         kind: context
++         path: user
++         value:
++           - danny
++           - alex
 ```
 
 In this scenario, the "feature/new" will evaluate to true if the `Context` user is either "danny" or "alex".
@@ -87,23 +87,23 @@ There can be instances where you might want to exclude certain users from access
 For example, if you want to exclude the user "alex" from accessing the "feature/new", you can adjust the YAML gates as follows:
 
 ```diff
-  "feature/new":
--   eval: "IsEnv || IsStage || IsUser"
-+   eval: "IsEnv || IsStage || IsUser && IsNotExcludedUser"
-    conditions:
-      - id: IsUser
-        operation: include
-        kind: context
-        path: user
-        value:
-          - danny
-          - alex
-+     - id: IsNotExcludedUser
-+       operation: exclude
-+       kind: context
-+       path: user
-+       value:
-+         - alex
+  - "feature/new":
+-     eval: "IsEnv || IsStage || IsUser"
++     eval: "IsEnv || IsStage || IsUser && IsNotExcludedUser"
+      conditions:
+        - id: IsUser
+          operation: include
+          kind: context
+          path: user
+          value:
+            - danny
+            - alex
++       - id: IsNotExcludedUser
++         operation: exclude
++         kind: context
++         path: user
++         value:
++           - alex
 ```
 
 In this example, the condition `IsNotExcludedUser` ensures that the "feature/new" will not evaluate to true if the `Context` user is "alex", even if the other conditions are met. This effectively excludes "alex" from the new feature.
@@ -145,23 +145,23 @@ YAML gates can be modified to enable features for specified companies.
 Here's how you can customize the YAML gates to implement this functionality:
 
 ```diff
-  "feature/new":
--   eval: "IsEnv || IsStage || IsUser"
-+   eval: "IsEnv || IsStage || IsUser || IsCompany"
-    conditions:
-      - id: IsEnv
-        operation: include
-        kind: context
-        path: env
-        value:
-          - inte
-+     - id: IsCompany
-+       operation: include
-+       kind: context
-+       path: company
-+       value:
-+         - acme
-+         - globex
+  - "feature/new":
+-     eval: "IsEnv || IsStage || IsUser"
++     eval: "IsEnv || IsStage || IsUser || IsCompany"
+      conditions:
+        - id: IsEnv
+          operation: include
+          kind: context
+          path: env
+          value:
+            - inte
++       - id: IsCompany
++         operation: include
++         kind: context
++         path: company
++         value:
++           - acme
++           - globex
 ```
 
 In this context, "feature/new" will evaluate to true if the `Context` company is either "acme" or "globex".
@@ -171,22 +171,22 @@ In this context, "feature/new" will evaluate to true if the `Context` company is
 For the deployment of features for users with a pro account, you can incorporate a new condition to the YAML gates:
 
 ```diff
-  "feature/new":
--   eval: "IsEnv || IsStage || IsUser || IsCompany"
-+   eval: "IsEnv || IsStage || IsUser || IsCompany || IsProAccount"
-    conditions:
-      - id: IsEnv
-        operation: include
-        kind: context
-        path: env
-        value:
-          - inte
-+     - id: IsProAccount
-+       operation: equals
-+       kind: context
-+       path: isProAccount
-+       value:
-+         - true
+  - "feature/new":
+-     eval: "IsEnv || IsStage || IsUser || IsCompany"
++     eval: "IsEnv || IsStage || IsUser || IsCompany || IsProAccount"
+      conditions:
+        - id: IsEnv
+          operation: include
+          kind: context
+          path: env
+          value:
+            - inte
++       - id: IsProAccount
++         operation: equals
++         kind: context
++         path: isProAccount
++         value:
++           - true
 ```
 
 In this example, "feature/new" will evaluate to true if the `Context` has `isProAccount` set to true.

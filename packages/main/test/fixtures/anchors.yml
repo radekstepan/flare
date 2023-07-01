@@ -1,22 +1,22 @@
-"feature/foo":
-  eval: "IncludeTestCompanies"
-  conditions:
-    - &includeTestCompanies
-      id: IncludeTestCompanies
-      operation: include
-      kind: context
-      path: company
-      value:
-        - vortex
-        - volantis
+- "feature/foo":
+    eval: "IncludeTestCompanies"
+    conditions:
+      - &includeTestCompanies
+        id: IncludeTestCompanies
+        operation: include
+        kind: context
+        path: company
+        value:
+          - vortex
+          - volantis
 
-"feature/bar":
-  eval: "IncludeTestCompanies || IncludeAcme"
-  conditions:
-    - *includeTestCompanies
-    - id: IncludeAcme
-      operation: include
-      kind: context
-      path: company
-      value:
-        - acme
+  "feature/bar":
+    eval: "IncludeTestCompanies || IncludeAcme"
+    conditions:
+      - *includeTestCompanies
+      - id: IncludeAcme
+        operation: include
+        kind: context
+        path: company
+        value:
+          - acme

@@ -12,18 +12,18 @@ yarn add @radekstepan/flare
 
 ## Usage
 
-The Flare class is the main export of this package. It is used to create a new Flare instance. You need to provide a `Gates` object or a Promise resolving to a `Gates` object in the constructor. The `Gates` object contains gate definitions that are compiled and stored for evaluation.
+The Flare class is the main export of this package. It is used to create a new Flare instance. You need to provide a `Data` array or a Promise resolving to a `Date` array in the constructor. The `Data` array contains maps of `Gate` definitions that are compiled and stored for evaluation.
 
 ```ts
 import Flare from "@radekstepan/flare";
 
-const gates = Promise.resolve({
+const gates = Promise.resolve([{
   gate1: {
     conditions: [{...}], // Define conditions here
     eval: '{...}' // Expression to evaluate
   },
   //...more gates
-});
+}]);
 
 const flare = new Flare(gates);
 ```

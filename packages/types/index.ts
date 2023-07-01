@@ -32,6 +32,8 @@ export interface Gate {
 
 export type Gates = Record<string, Gate>;
 
+export type Data = Gates[];
+
 export interface CompiledGate {
   eval: Eval;
   conditions: Map<string, Condition<Set<ContextValue>>>;

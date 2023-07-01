@@ -1,9 +1,9 @@
 import {
   Kind,
+  type Data,
   type Operation,
   type CompiledGate,
   type Condition,
-  type Gates,
   type Flags,
   type Context,
   type ContextValue,
@@ -19,30 +19,33 @@ class Flare {
   jobRunner: DoJob<Flags>;
 
   // The constructor compiles the gates.
-  constructor(dataOrPromise: Gates | Promise<Gates>) {
+  constructor(dataOrPromise: Data | Promise<Data>) {
     const promise = Promise.resolve(dataOrPromise).then((data) => {
-      // Compile each gate and store it in the `gates` Map.
-      for (let name in data) {
-        const gate = data[name];
+      // A list of gates.
+      for (const gates of data) {
+        // Compile each gate and store it in the `gates` Map.
+        for (const name in gates) {
+          const gate = gates[name];
 
-        // Convert the conditions of each gate into a Map for easy access.
-        const conditions = new Map(
-          gate.conditions.map((condition) => [
-            condition.id,
-            {
-              ...condition,
-              // A list of values turned into a Set (faster eval, slower boot).
-              value: new Set(condition.value),
-            },
-          ])
-        );
+          // Convert the conditions of each gate into a Map for easy access.
+          const conditions = new Map(
+            gate.conditions.map((condition) => [
+              condition.id,
+              {
+                ...condition,
+                // A list of values turned into a Set (faster eval, slower boot).
+                value: new Set(condition.value),
+              },
+            ])
+          );
 
-        // Compile the gate's expression and save it in the `gates` Map.
-        const [compiledFn] = compile(gate.eval);
-        this.gates.set(name, {
-          conditions,
-          eval: compiledFn,
-        });
+          // Compile the gate's expression and save it in the `gates` Map.
+          const [compiledFn] = compile(gate.eval);
+          this.gates.set(name, {
+            conditions,
+            eval: compiledFn,
+          });
+        }
       }
     });
     // Initialize the job runner with the promise that resolves with the compiled gates.
