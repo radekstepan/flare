@@ -25,26 +25,34 @@ export const gateSchema = Joi.object()
   .keys({
     eval: Joi.alternatives()
       .try(Joi.string(), Joi.boolean()) // 'value' must be either a string or a boolean
-      .required()
-      .custom((value: Gate["eval"]) => {
-        compile(value);
-        return value;
-      }, "valid compiled eval expression"), // The 'eval' string must be a valid expression that can be compiled
+      .required(),
     conditions: Joi.array()
       .items(conditionSchema) // 'conditions' must be an array of valid condition objects
       .required()
-      .min(1)
-      .custom((value: Gate["conditions"]) => {
-        const ids = value.map((item) => item.id);
-        const uniqueIds = new Set(ids);
-        // Each condition in the array must have a unique 'id'
-        if (ids.length !== uniqueIds.size) {
-          throw new Error('each condition must have a unique "id"');
-        }
-        return value;
-      }, "unique condition id"),
+      .min(1),
   })
-  .required();
+  .required()
+  .custom((value: Gate) => {
+    // Extract the set of known conditions and make sure they are unique.
+    let knownConditions = new Set<string>();
+    if ("conditions" in value && Array.isArray(value.conditions)) {
+      const ids = value.conditions.map((item) => item.id);
+      knownConditions = new Set(ids);
+      if (ids.length !== knownConditions.size) {
+        throw new Error('each condition must have a unique "id"');
+      }
+    }
+    // Make sure eval compiles and all conditions are defined.
+    if ("eval" in value) {
+      const [, evalConditions] = compile(value.eval);
+      for (const cond of evalConditions) {
+        if (!knownConditions.has(cond)) {
+          throw new Error(`condition "${cond}" is missing`);
+        }
+      }
+    }
+    return value;
+  }, "valid compile eval expression and conditions");
 
 // Joi schema for validating a map of gate objects.
 export const gatesSchema = Joi.object()

@@ -12,6 +12,8 @@ import type {
 } from "estree";
 import type { Eval, EvalContext, Gate } from "@radekstepan/flare-types";
 
+const EMPTY_SET = new Set<string>();
+
 // Type guards to identify different types of nodes in the AST.
 function isExpressionStatement(
   node: Directive | Statement | ModuleDeclaration
@@ -36,9 +38,9 @@ function isLogicalExpression(node: Expression): node is LogicalExpression {
 }
 
 // Compile function takes an expression string and returns an Eval function.
-const compile = (expression: Gate["eval"]): Eval => {
+const compile = (expression: Gate["eval"]): [Eval, Set<string>] => {
   if (typeof expression === "boolean") {
-    return () => expression;
+    return [() => expression, EMPTY_SET];
   } else if (typeof expression !== "string") {
     throw new Error("expression is not a string");
   }
@@ -54,8 +56,10 @@ const compile = (expression: Gate["eval"]): Eval => {
   // we compile it into a function.
   if (isExpressionStatement(syntax.body[0])) {
     const { expression } = syntax.body[0];
+    // Collect the condition identifiers.
+    const conditions = new Set<string>();
     // Compile the AST into a function
-    return compileAST(expression);
+    return [compileAST(expression, conditions), conditions];
   }
 
   throw new Error("ExpressionStatement is not found");
@@ -63,13 +67,16 @@ const compile = (expression: Gate["eval"]): Eval => {
 
 // This function takes an Expression node from the AST
 //  and returns a function that evaluates that expression.
-function compileAST(node: Expression): (evalContext: EvalContext) => boolean {
+function compileAST(
+  node: Expression,
+  conditions: Set<string>
+): (evalContext: EvalContext) => boolean {
   // If the node is a LogicalExpression, it's an expression with a logical operator
   //  like '&&' (logical AND) or '||' (logical OR).
   if (isLogicalExpression(node)) {
     // We recursively compile the left and right parts of the expression into functions.
-    const leftFunc = compileAST(node.left);
-    const rightFunc = compileAST(node.right);
+    const leftFunc = compileAST(node.left, conditions);
+    const rightFunc = compileAST(node.right, conditions);
 
     // Return a function that performs the correct operation.
     if (node.operator === "&&") {
@@ -86,11 +93,12 @@ function compileAST(node: Expression): (evalContext: EvalContext) => boolean {
     throw new Error(`Literal node type "${typeof node.value}" is invalid`);
     // Lookup the value of a condition in the context.
   } else if (isIdentifier(node)) {
+    conditions.add(node.name);
     return (evalContext) => evalContext(node.name);
     // Negate an expression.
   } else if (isUnaryExpression(node)) {
     if (node.operator === "!") {
-      const argumentFunc = compileAST(node.argument);
+      const argumentFunc = compileAST(node.argument, conditions);
       return (evalContext) => !argumentFunc(evalContext);
     }
     throw new Error(`UnaryExpression operator "${node.operator}" is invalid`);

@@ -117,7 +117,22 @@ test('should throw an error when "conditions[].id" is not unique', async (t) => 
   t.is(res.status, "rejected");
   t.is(
     (res as PromiseRejectedResult).reason.message,
-    '"conditions" failed custom validation because each condition must have a unique "id"'
+    '"value" failed custom validation because each condition must have a unique "id"'
+  );
+});
+
+test("should throw an error when an eval condition is missing", async (t) => {
+  const [res] = await Promise.allSettled([
+    gateSchema.validateAsync({
+      eval: "foo || bar",
+      conditions: [validCondition],
+    }),
+  ]);
+
+  t.is(res.status, "rejected");
+  t.is(
+    (res as PromiseRejectedResult).reason.message,
+    '"value" failed custom validation because condition "bar" is missing'
   );
 });
 

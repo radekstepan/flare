@@ -12,7 +12,8 @@ export default async function scaffold(flags) {
     (acc, i) => ({
       ...acc,
       [i + faker.lorem.slug()]: {
-        eval: "true",
+        // Skips esprima parsing and compilation.
+        eval: true,
         conditions: multiple(flags.conditions).map((i) => ({
           id: "id" + i + faker.lorem.word(),
           kind: "context",

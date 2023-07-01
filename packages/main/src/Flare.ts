@@ -38,9 +38,10 @@ class Flare {
         );
 
         // Compile the gate's expression and save it in the `gates` Map.
+        const [compiledFn] = compile(gate.eval);
         this.gates.set(name, {
           conditions,
-          eval: compile(gate.eval),
+          eval: compiledFn,
         });
       }
     });

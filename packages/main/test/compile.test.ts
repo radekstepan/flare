@@ -23,101 +23,114 @@ const newContext = (): [Set<string>, EvalContext] => {
 // Test booleans.
 test("Boolean: true", (t) => {
   const [called, evalContext] = newContext();
-  const evaluate = compile(true);
+  const [evaluate, conditions] = compile(true);
   t.true(evaluate(evalContext));
+  t.deepEqual(conditions, new Set([]));
   t.deepEqual(called, new Set([]));
 });
 
 test("Boolean: false", (t) => {
   const [called, evalContext] = newContext();
-  const evaluate = compile(false);
+  const [evaluate, conditions] = compile(false);
   t.false(evaluate(evalContext));
   t.deepEqual(called, new Set([]));
+  t.deepEqual(conditions, new Set([]));
 });
 
 // Test literals.
 test("Literal: true", (t) => {
   const [called, evalContext] = newContext();
-  const evaluate = compile("true");
+  const [evaluate, conditions] = compile("true");
   t.true(evaluate(evalContext));
   t.deepEqual(called, new Set([]));
+  t.deepEqual(conditions, new Set([]));
 });
 
 test("Literal: false", (t) => {
   const [called, evalContext] = newContext();
-  const evaluate = compile("false");
+  const [evaluate, conditions] = compile("false");
   t.false(evaluate(evalContext));
   t.deepEqual(called, new Set([]));
+  t.deepEqual(conditions, new Set([]));
 });
 
 // Test identifiers.
 test("Identifier: A", (t) => {
   const [called, evalContext] = newContext();
-  const evaluate = compile("A");
+  const [evaluate, conditions] = compile("A");
   t.true(evaluate(evalContext));
   t.deepEqual(called, new Set(["A"]));
+  t.deepEqual(conditions, new Set(["A"]));
 });
 
 // Test unary expressions.
 test("Unary: !A", (t) => {
   const [called, evalContext] = newContext();
-  const evaluate = compile("!A");
+  const [evaluate, conditions] = compile("!A");
   t.false(evaluate(evalContext));
   t.deepEqual(called, new Set(["A"]));
+  t.deepEqual(conditions, new Set(["A"]));
 });
 
 // Test logical expressions.
 test("Logical: A && B", (t) => {
   const [called, evalContext] = newContext();
-  const evaluate = compile("A && B");
+  const [evaluate, conditions] = compile("A && B");
   t.false(evaluate(evalContext));
   t.deepEqual(called, new Set(["A", "B"]));
+  t.deepEqual(conditions, new Set(["A", "B"]));
 });
 
 test("Logical: B || A", (t) => {
   const [called, evalContext] = newContext();
-  const evaluate = compile("B || A");
+  const [evaluate, conditions] = compile("B || A");
   t.true(evaluate(evalContext));
   t.deepEqual(called, new Set(["B", "A"]));
+  t.deepEqual(conditions, new Set(["B", "A"]));
 });
 
 // Test short-circuiting.
 test("Short-circuit: B && A", (t) => {
   const [called, evalContext] = newContext();
-  const evaluate = compile("B && A");
+  const [evaluate, conditions] = compile("B && A");
   t.false(evaluate(evalContext));
   t.deepEqual(called, new Set(["B"]));
+  t.deepEqual(conditions, new Set(["B", "A"]));
 });
 
 test("Short-circuit: A || B", (t) => {
   const [called, evalContext] = newContext();
-  const evaluate = compile("A || B");
+  const [evaluate, conditions] = compile("A || B");
   t.true(evaluate(evalContext));
   t.deepEqual(called, new Set(["A"]));
+  t.deepEqual(conditions, new Set(["A", "B"]));
 });
 
 // Test complex expressions.
 test("Complex: A && !B", (t) => {
   const [called, evalContext] = newContext();
-  const evaluate = compile("A && !B");
+  const [evaluate, conditions] = compile("A && !B");
   t.true(evaluate(evalContext));
   t.deepEqual(called, new Set(["A", "B"]));
+  t.deepEqual(conditions, new Set(["A", "B"]));
 });
 
 test("Complex: (A || B) && !B", (t) => {
   const [called, evalContext] = newContext();
-  const evaluate = compile("(A || B) && !B");
+  const [evaluate, conditions] = compile("(A || B) && !B");
   t.true(evaluate(evalContext));
   t.deepEqual(called, new Set(["A", "B"]));
+  t.deepEqual(conditions, new Set(["A", "B"]));
 });
 
 // Test invalid identifier.
 test("Invalid Identifier: C", (t) => {
   const [called, evalContext] = newContext();
-  const evaluate = compile("C");
+  const [evaluate, conditions] = compile("C");
   const error = t.throws(() => evaluate(evalContext));
   t.is(error?.message, 'Identifier "C" not found in context');
   t.deepEqual(called, new Set(["C"]));
+  t.deepEqual(conditions, new Set(["C"]));
 });
 
 // Test invalid expressions.
