@@ -4,7 +4,7 @@ import { load } from "js-yaml";
 import { useAtomValue } from "jotai";
 import { Flare } from "@radekstepan/flare";
 import { validate } from "@radekstepan/flare-utils";
-import type { Gates, Context } from "@radekstepan/flare-types";
+import type { Data, Context } from "@radekstepan/flare-types";
 import { gatesInput, contextInput } from "./atoms";
 
 function Output() {
@@ -12,7 +12,7 @@ function Output() {
   const context = useAtomValue(contextInput);
 
   const { loading, error, value } = useAsync(async () => {
-    const gates = load(yamlGates) as Gates;
+    const gates = load(yamlGates) as Data;
     await validate.validateGates(gates);
     const n = Object.keys(gates).length;
     if (!context) {

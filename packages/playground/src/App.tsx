@@ -1,5 +1,6 @@
 import React from "react";
 import Editor from "./Editor";
+import Convert from "./Convert";
 import Output from "./Output";
 import { gatesInput, contextInput } from "./atoms";
 
@@ -19,6 +20,7 @@ function App() {
       </div>
       <div className="section">
         <div className="subtitle">YAML Gates</div>
+        <Convert />
         <div>Enter your YAML gates, specifying conditions and operations.</div>
         <Editor lang="yaml" atom={gatesInput} />
       </div>

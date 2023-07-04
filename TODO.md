@@ -1,3 +1,6 @@
+fix:
+- https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/CJSResolvesToESM.md
+
 extras:
 - share a URL with the input to playground
 - Netlify badge

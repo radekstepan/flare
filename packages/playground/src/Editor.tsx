@@ -6,7 +6,7 @@ import "prismjs/components/prism-json";
 import { useAtom, type Atom } from "jotai";
 
 interface Props {
-  lang: string;
+  lang: "yaml" | "json";
   atom: Atom<string>;
 }
 
