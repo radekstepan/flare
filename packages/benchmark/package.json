@@ -1,8 +1,8 @@
 {
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
-    "@radekstepan/flare": "^1.2.1",
-    "@radekstepan/flare-utils": "^1.2.1",
+    "@radekstepan/flare": "^1.2.4",
+    "@radekstepan/flare-utils": "^1.2.4",
     "autocannon": "^7.11.0",
     "lint-staged": "^13.2.2",
     "meow": "^12.0.1",
@@ -13,7 +13,7 @@
     "start": "node benchmark.js"
   },
   "name": "@radekstepan/flare-benchmark",
-  "version": "1.2.1",
+  "version": "1.2.4",
   "private": true,
   "type": "module",
   "author": "Radek Stepan <dev@radekstepan.com>",

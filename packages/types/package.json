@@ -6,7 +6,7 @@
     "typescript": "^5.0.4"
   },
   "name": "@radekstepan/flare-types",
-  "version": "1.2.1",
+  "version": "1.2.4",
   "main": "index.ts",
   "type": "module",
   "author": "Radek Stepan <dev@radekstepan.com>",
